@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>코드러너 항해일지 — 사이버보안 탐험 기록</title>
+  <meta name="description" content="픽셀 판타지 세계관으로 풀어낸 사이버보안 학습 및 해킹 실습 기록 블로그" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="주요 메뉴">
+      <a class="nav__brand" href="#hero">코드러너 항해일지</a>
+
+      <button
+        class="nav__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        <span class="sr-only">메뉴 열기</span>
+        <span class="nav__toggle-icon" aria-hidden="true"></span>
+      </button>
+
+      <ul class="nav__menu" id="nav-menu" data-state="closed">
+        <li><a href="#">아카이브</a></li>
+        <li><a href="#">카테고리</a></li>
+        <li><a href="#">소개</a></li>
+        <li><a href="#">검색</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="hero">
+      <div class="hero__overlay" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <p class="hero__eyebrow">EXPLORER'S JOURNAL</p>
+        <h1 class="hero__title">잊혀진 지식을 찾아 떠나는 여정</h1>
+        <p class="hero__subtitle">
+          하늘 위 궁전과 용이 지키는 세계에서, 한 명의 탐험가가 사이버보안의
+          오래된 비밀을 하나씩 기록합니다.
+        </p>
+
+        <dl class="status-panel" aria-label="탐험가 상태 정보">
+          <div class="status-panel__row">
+            <dt>플레이어</dt>
+            <dd>시큐리티 탐험가</dd>
+          </div>
+          <div class="status-panel__row">
+            <dt>상태</dt>
+            <dd>학습 중</dd>
+          </div>
+          <div class="status-panel__row">
+            <dt>진행 중인 퀘스트</dt>
+            <dd>OSCP / HTB</dd>
+          </div>
+          <div class="status-panel__row">
+            <dt>발견한 기록</dt>
+            <dd>24개</dd>
+          </div>
+        </dl>
+      </div>
+
+      <a class="hero__scroll-cue" href="#latest-posts">
+        <span class="sr-only">최신 기록으로 이동</span>
+        <span aria-hidden="true">▾</span>
+      </a>
+    </section>
+
+    <section class="latest-posts" id="latest-posts" aria-labelledby="latest-posts-heading">
+      <h2 class="latest-posts__heading" id="latest-posts-heading">최신 탐험 기록</h2>
+
+      <div class="post-grid">
+        <article class="post-card scroll-frame">
+          <a class="post-card__link" href="#" data-post-id="sql-injection-first-gate">
+            <div class="post-card__meta">
+              <span class="post-card__category">웹 해킹</span>
+              <span class="post-card__date">2026.07.18</span>
+            </div>
+            <h3 class="post-card__title">SQL 인젝션으로 여는 첫 번째 관문</h3>
+            <p class="post-card__excerpt">
+              블라인드 SQLi 페이로드를 단계별로 분석하며 로그인 우회 취약점을
+              파고든 기록입니다. 실습 환경에서의 접근 방식과 방어 전략까지
+              함께 정리했습니다.
+            </p>
+            <span class="post-card__reading-time">7분 분량</span>
+          </a>
+        </article>
+
+        <article class="post-card scroll-frame">
+          <a class="post-card__link" href="#" data-post-id="linux-privesc-forgotten-cronjob">
+            <div class="post-card__meta">
+              <span class="post-card__category">Hack The Box</span>
+              <span class="post-card__date">2026.07.15</span>
+            </div>
+            <h3 class="post-card__title">리눅스 권한 상승, 잊혀진 크론잡의 흔적</h3>
+            <p class="post-card__excerpt">
+              SUID 바이너리와 cron 스케줄을 뒤쫓다 발견한 권한 상승 경로를
+              정리했습니다. 열쇠는 언제나 사소한 설정 파일에 숨어 있었습니다.
+            </p>
+            <span class="post-card__reading-time">10분 분량</span>
+          </a>
+        </article>
+
+        <article class="post-card scroll-frame">
+          <a class="post-card__link" href="#" data-post-id="classical-cipher-roots">
+            <div class="post-card__meta">
+              <span class="post-card__category">암호학</span>
+              <span class="post-card__date">2026.07.10</span>
+            </div>
+            <h3 class="post-card__title">고전 암호에서 배우는 현대 공격의 뿌리</h3>
+            <p class="post-card__excerpt">
+              비즈네르 암호를 복원하는 과정을 통해 빈도 분석의 원리를 다시
+              살펴봤습니다. 오래된 문제일수록 기본기가 드러납니다.
+            </p>
+            <span class="post-card__reading-time">6분 분량</span>
+          </a>
+        </article>
+
+        <article class="post-card scroll-frame">
+          <a class="post-card__link" href="#" data-post-id="packet-intrusion-clues">
+            <div class="post-card__meta">
+              <span class="post-card__category">네트워크</span>
+              <span class="post-card__date">2026.07.05</span>
+            </div>
+            <h3 class="post-card__title">패킷 속에 숨은 침입의 단서</h3>
+            <p class="post-card__excerpt">
+              Wireshark로 캡처한 트래픽에서 이상 징후를 추적한 탐정
+              일지입니다. 작은 이상 패턴 하나가 전체 시나리오를 바꿔놓았습니다.
+            </p>
+            <span class="post-card__reading-time">9분 분량</span>
+          </a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <div
+      class="modal scroll-frame"
+      id="post-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      tabindex="-1"
+    >
+      <header class="modal__titlebar">
+        <span class="modal__category" id="modal-category"></span>
+        <h2 class="modal__title" id="modal-title"></h2>
+        <a class="modal__open-page" id="modal-open-page" href="#">페이지 열기</a>
+        <button class="modal__close" id="modal-close" type="button">
+          <span class="sr-only">닫기</span>
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+      <div class="modal__body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/modal.js"></script>
+</body>
+</html>
