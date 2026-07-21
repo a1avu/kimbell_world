@@ -28,6 +28,40 @@
     return match ? raw.slice(match[0].length) : raw;
   }
 
+  // posts.js와 동일한 위키링크 정리 로직 (코드 블록 내부는 보존, 브래킷만 제거).
+  function stripWikilinkSyntax(line) {
+    line = line.replace(/!\[\[([^\]]+)\]\]/g, function (match, inner) {
+      return inner.split("|")[0];
+    });
+    line = line.replace(/\[\[([^\]]+)\]\]/g, function (match, inner) {
+      var parts = inner.split("|");
+      return parts[parts.length - 1];
+    });
+    return line;
+  }
+
+  function cleanWikilinks(markdown) {
+    var inFence = false;
+    var fenceMarker = null;
+    return markdown
+      .split("\n")
+      .map(function (line) {
+        var fenceMatch = line.match(/^\s*(```|~~~)/);
+        if (fenceMatch) {
+          if (!inFence) {
+            inFence = true;
+            fenceMarker = fenceMatch[1];
+          } else if (fenceMatch[1] === fenceMarker) {
+            inFence = false;
+            fenceMarker = null;
+          }
+          return line;
+        }
+        return inFence ? line : stripWikilinkSyntax(line);
+      })
+      .join("\n");
+  }
+
   function findPost(slug) {
     return manifest.filter(function (p) {
       return p.slug === slug;
@@ -171,7 +205,7 @@
       })
       .then(function (raw) {
         if (currentSlug !== post.slug) return;
-        var html = marked.parse(stripFrontmatter(raw));
+        var html = marked.parse(cleanWikilinks(stripFrontmatter(raw)));
         var wrapper = document.createElement("div");
 
         var meta = document.createElement("div");

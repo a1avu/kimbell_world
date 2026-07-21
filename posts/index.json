@@ -32,7 +32,7 @@
     "date": "2026-07-21",
     "category": "HTB",
     "tags": [],
-    "excerpt": "default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ ![[Pasted image 20260717145514.png|472]] #####…",
+    "excerpt": "default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ Pasted image 20260717145514.png #####…",
     "readingTime": 4
   },
   {
@@ -41,7 +41,7 @@
     "date": "2026-07-21",
     "category": "HTB",
     "tags": [],
-    "excerpt": "그리고 gobuster 결과가 개많이 나왔음 ![[Pasted image 20260721145818.png|455]] ##### Initial Foothold 벡터: 노출된…",
+    "excerpt": "그리고 gobuster 결과가 개많이 나왔음 Pasted image 20260721145818.png ##### Initial Foothold 벡터: 노출된…",
     "readingTime": 5
   },
   {
@@ -68,7 +68,7 @@
     "date": "2026-07-15",
     "category": "암호학",
     "tags": [],
-    "excerpt": "-> 얘도 cve가 있을때가 있음 -> ex) [[keeper]] 덤프와 합쳐진 kdbx ## 1. 문자열 길이와 형태 (가장 일반적인 판별 기준)",
+    "excerpt": "-> 얘도 cve가 있을때가 있음 -> ex) keeper 덤프와 합쳐진 kdbx ## 1. 문자열 길이와 형태 (가장 일반적인 판별 기준)",
     "readingTime": 2
   },
   {
@@ -293,7 +293,7 @@
     "date": "2026-06-18",
     "category": "미분류",
     "tags": [],
-    "excerpt": "--- 파일 명으로 링크 거는게 대부분임 **ex)** ~~~ [[OSCP/cheatsheets/linux_privesc.md]] ~~~",
+    "excerpt": "--- 파일 명으로 링크 거는게 대부분임 **ex)** ~~~ OSCP/cheatsheets/linux_privesc.md ~~~",
     "readingTime": 3
   },
   {
