@@ -2,7 +2,7 @@
 slug: "busqueda"
 title: "Busqueda"
 date: 2026-06-23
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "--- ## Open Ports"
 readingTime: 8

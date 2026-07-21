@@ -2,7 +2,7 @@
 slug: "blind-sqli-script"
 title: "Blind sqli script"
 date: 2026-07-03
-category: "미분류"
+category: "웹 해킹"
 tags: []
 excerpt: "- 에러 메시지가 안 나오는 blind SQLi 상황 - 응답에 True/False를 구분할 수 있는 메시지가 있을 때 - sqlmap 못 쓰는 환경 (OSCP 시험 등)"
 readingTime: 12

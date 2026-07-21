@@ -2,7 +2,7 @@
 slug: "dog"
 title: "dog"
 date: 2026-07-21
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "그리고 gobuster 결과가 개많이 나왔음 ![[Pasted image 20260721145818.png|455]] ##### Initial Foothold 벡터: 노출된…"
 readingTime: 5

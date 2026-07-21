@@ -2,7 +2,7 @@
 slug: "boardlight"
 title: "_BoardLight"
 date: 2026-06-29
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "--- ##### Open Ports"
 readingTime: 5

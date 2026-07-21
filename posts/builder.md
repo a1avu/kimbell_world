@@ -2,7 +2,7 @@
 slug: "builder"
 title: "builder"
 date: 2026-07-17
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "일단 searchsploit ㄱㄱ ```sh searchsploit jenkins > Jenkins 2.441 - Local File Inclusion |…"
 readingTime: 5

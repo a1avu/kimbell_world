@@ -2,7 +2,7 @@
 slug: "magic"
 title: "Magic"
 date: 2026-06-22
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "날짜 : 2026/06/21 소요시간:"
 readingTime: 5

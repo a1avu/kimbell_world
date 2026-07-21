@@ -2,7 +2,7 @@
 slug: "markup"
 title: "Markup"
 date: 2026-06-20
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "XML이 외부 엔티티를 검증 없이 처리해서 서버 파일을 읽을 수 있음"
 readingTime: 4

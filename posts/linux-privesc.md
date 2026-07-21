@@ -2,7 +2,7 @@
 slug: "linux-privesc"
 title: "linux_privesc"
 date: 2026-07-21
-category: "미분류"
+category: "시스템 해킹"
 tags: []
 excerpt: "쉘 진입하면 privesc 전에 이 3군데부터 훑는다:"
 readingTime: 17

@@ -2,7 +2,7 @@
 slug: "pandora"
 title: "pandora"
 date: 2026-07-06
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "80포트에 너무 아무 정보가 없어서 udp 스캔을 해봄 ```shell nmap -sU --top-ports 3 10.129.22.152 ``` -> 161/udp open…"
 readingTime: 10

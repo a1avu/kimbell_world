@@ -60,3 +60,44 @@
   것으로 예상하지만 실제 OS 설정 토글 테스트는 아님).
 - 카테고리 그룹 "미분류(34)"처럼 그룹이 큰 경우 접기 UX는 확인했지만, 그룹이
   아주 많아졌을 때(카테고리 10개 이상) 좌측 리스트 스크롤 UX는 추가 검증 없음.
+
+---
+
+### 완료: 2. 카테고리 자동 정리
+
+**방법**: 34개 포스트 전부의 frontmatter(제목, `Box:` 헤더 유무)와 본문 앞부분을
+직접 읽고 분류한 뒤, `posts/*.md`의 `category:` 필드와 `posts/index.json`의
+`category` 필드를 스크립트로 일괄 반영했습니다 (수작업 오타 방지를 위해
+매핑 테이블 기반 스크립트 사용, 매핑 자체는 사람이 내용을 읽고 판단).
+
+**분류 근거**
+- **HTB (20개)**: `access, boardlight, broker, builder, busqueda, cozyhosting,
+  dog, editor, help, jeeves, keeper, magic, markup, networked, pandora, sau,
+  servmon, soccer, updown, usage` — 전부 본문에 `#### Box: 이름 | OS | 난이도`
+  형식의 HTB 머신 풀이 헤더가 있어 명확하게 판별.
+- **웹 해킹 (3개)**: `blind-sqli-script`(Blind SQLi 자동화), `file-transfer`
+  (웹쉘 업로드용 매직바이트/특수문자 우회), `web-checklist`(웹 정찰 체크리스트).
+- **암호학 (1개)**: `hash` — 해시 식별 기준 + hashcat 사용법.
+- **네트워크 (2개)**: `enumeration-checklist`(nmap/포트/SNMP 위주 정찰),
+  `smb-checklist`(SMB 프로토콜 열거).
+- **시스템 해킹 (신규 카테고리, 3개)**: `linux-privesc`, `windows-privesc`,
+  `reverse-shell` — 기존 4개 카테고리(웹 해킹/HTB/암호학/네트워크) 중 어디에도
+  깔끔히 들어가지 않는 OS 레벨 권한상승·쉘 획득 기법 모음이라 최소한으로 새
+  카테고리를 추가했습니다. 세 파일 모두 "박스 하나에 종속되지 않는 범용
+  post-exploitation 기법"이라는 공통점이 있어 하나의 카테고리로 묶는 것이
+  기존 톤(주제별 체크리스트)과 가장 일관된다고 판단했습니다.
+
+**미분류로 남긴 5개 (애매함)**
+- `db`: PostgreSQL 클라이언트 명령어 모음 — 웹/네트워크/암호학/시스템 중
+  하나로 단정하기 애매함 (DB 피벗팅은 여러 카테고리에 걸침).
+- `tools`: searchsploit, hydra, ssh 터널링, mdbtools/readpst, KeePass 크랙,
+  puttygen 등 성격이 다른 도구 모음이라 단일 카테고리로 묶기 부적절.
+- `jigjeob-chigi-gwichanheun-myeongryeongeo`: HTB VPN 접속 명령어 한 줄짜리
+  메모 — 보안 기술 콘텐츠라기보다 개인 유틸리티 메모.
+- `obsidieon-jeongribeob`: Obsidian 폴더 구조 정리법 — 보안 콘텐츠가 아닌
+  메타 노트.
+- `oscp-junbi-peulraen`: OSCP 학습 일정표 — 기술 콘텐츠가 아닌 개인 계획 노트.
+
+이 5개는 사용자가 직접 판단해서 분류하거나 별도 카테고리(예: "메모"/"스터디
+플랜")를 만들지 결정하는 것이 나을 것 같아 임의로 카테고리를 부여하지
+않았습니다.

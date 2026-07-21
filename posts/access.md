@@ -2,7 +2,7 @@
 slug: "access"
 title: "Access"
 date: 2026-07-14
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "23 -> ssh가 아니라 telnet이 열려있음"
 readingTime: 5

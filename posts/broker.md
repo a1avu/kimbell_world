@@ -2,7 +2,7 @@
 slug: "broker"
 title: "Broker"
 date: 2026-07-21
-category: "미분류"
+category: "HTB"
 tags: []
 excerpt: "default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ ![[Pasted image 20260717145514.png|472]] #####…"
 readingTime: 4
