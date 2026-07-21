@@ -250,3 +250,38 @@ End with a summary of changed files, implemented behavior, and unresolved issues
 - Traveler, dragon, and palace composition survives on mobile
 - Core content remains accessible without JavaScript
 - But all the contents and your respons should be korean
+
+## Archive (Quest Log)
+
+Trigger: clicking "아카이브" in nav opens a full-screen quest-log
+style overlay (reuses the existing modal/dialog system: focus
+trap, Escape/backdrop close, URL hash `#/archive`).
+
+Layout: two-pane game menu window (dark pixel-bordered panel).
+
+Left pane — quest list:
+- Grouped by category, each group collapsible
+  (e.g. "웹 해킹 (8)", "HTB (12)")
+- Each entry is compact: title + date only
+- Keyboard arrow-key navigation between entries
+- Search input at top filters the list live
+
+Right pane — selected quest:
+- Shows the selected post's full content directly inside this
+  pane (reuse the markdown rendering from the post modal)
+- If nothing selected yet, show a placeholder/empty state
+  ("탐험할 기록을 선택하세요" or similar)
+
+Data source: posts/index.json
+
+Mobile: collapse to single-pane — list first, tapping an entry
+replaces the view with the content pane and shows a back button.
+
+Requirements:
+- role="dialog", aria-modal, labelled title (reuse existing
+  a11y pattern)
+- Respect prefers-reduced-motion
+- Keyboard accessible throughout (arrow keys, Enter to select,
+  Escape to close)
+- URL reflects both archive open state and selected post
+  (e.g. #/archive/post-slug) so it's shareable/refreshable

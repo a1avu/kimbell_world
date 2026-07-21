@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(pkill -f \"http.server 8791\")",
+      "Bash(pip3 install *)",
+      "Bash(cp /tmp/fixed3_palace-dragon.png /Volumes/beelink/my_blog/assets/images/palace-dragon.png)",
+      "Bash(cp /tmp/fixed3_traveler-cliff.png /Volumes/beelink/my_blog/assets/images/traveler-cliff.png)",
+      "Bash(sort -k6,7)",
+      "Bash(cp /tmp/nodilate_palace-dragon.png /Volumes/beelink/my_blog/assets/images/palace-dragon.png)",
+      "Bash(cp /tmp/nodilate_traveler-cliff.png /Volumes/beelink/my_blog/assets/images/traveler-cliff.png)",
+      "Bash(cp /tmp/opening_test_palace.png /Volumes/beelink/my_blog/assets/images/palace-dragon.png)",
+      "Bash(cp /tmp/opening_test_traveler.png /Volumes/beelink/my_blog/assets/images/traveler-cliff.png)",
+      "Bash(git add *)"
     ]
   }
 }

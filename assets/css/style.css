@@ -236,27 +236,45 @@ a {
   padding: calc(var(--nav-height) + 24px) 20px 64px;
   overflow: hidden;
   color: var(--text-on-dark);
+  background: var(--deep-night);
+}
 
-  /* 실제 아트워크가 준비되기 전까지 사용하는 그라디언트 placeholder */
-  background: linear-gradient(
-    180deg,
-    var(--sky-top) 0%,
-    var(--sky-bottom) 32%,
-    var(--twilight) 68%,
-    var(--deep-night) 100%
-  );
+.hero__layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.hero__layer--sky {
+  background-image: url("../images/sky.png");
+  z-index: 0;
+}
+
+.hero__layer--palace {
+  background-image: url("../images/palace-dragon.png");
+  z-index: 1;
+  transform-origin: 65% 40%;
+}
+
+.hero__layer--traveler {
+  background-image: url("../images/traveler-cliff.png");
+  z-index: 2;
+  transform-origin: bottom;
 }
 
 .hero__overlay {
   position: absolute;
   inset: 0;
+  z-index: 3;
   background: var(--scene-overlay);
   pointer-events: none;
 }
 
 .hero__content {
   position: relative;
-  z-index: 1;
+  z-index: 4;
   max-width: 640px;
   text-align: center;
   display: flex;
@@ -327,7 +345,7 @@ a {
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1;
+  z-index: 4;
   color: var(--text-on-dark);
   font-size: 22px;
   text-decoration: none;
@@ -597,16 +615,105 @@ a {
   line-height: 1.75;
 }
 
+.modal__body > :first-child {
+  margin-top: 0;
+}
+
+.modal__body > :last-child {
+  margin-bottom: 0;
+}
+
 .modal__body p {
   margin: 0 0 1.2em;
 }
 
-.modal__body p:last-child {
-  margin-bottom: 0;
+.modal__body h1,
+.modal__body h2,
+.modal__body h3,
+.modal__body h4,
+.modal__body h5,
+.modal__body h6 {
+  margin: 1.4em 0 .6em;
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-main);
+}
+
+.modal__body ul,
+.modal__body ol {
+  margin: 0 0 1.2em;
+  padding-left: 1.4em;
+}
+
+.modal__body li {
+  margin-bottom: .4em;
+}
+
+.modal__body blockquote {
+  margin: 0 0 1.2em;
+  padding: 2px 16px;
+  border-left: 3px solid var(--accent-violet);
+  color: var(--text-muted);
+}
+
+.modal__body a {
+  color: var(--accent-blue);
+  text-decoration: underline;
+}
+
+.modal__body strong {
+  color: var(--text-main);
+}
+
+.modal__body hr {
+  border: none;
+  border-top: 1px dashed var(--border-mid);
+  margin: 1.4em 0;
+}
+
+.modal__body img {
+  margin: 0 0 1.2em;
+}
+
+.modal__body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1.2em;
+  font-size: .95em;
+}
+
+.modal__body th,
+.modal__body td {
+  border: 1px solid var(--border-mid);
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.modal__body :not(pre) > code {
+  background: rgba(26, 33, 50, .08);
+  padding: .15em .4em;
+  font-family: var(--font-code);
+  font-size: .9em;
+}
+
+.code-block {
+  margin: 0 0 1.2em;
+}
+
+.code-block__lang {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--panel-dark);
+  color: var(--accent-gold);
+  border: 2px solid var(--border-dark);
+  border-bottom: none;
+  font-family: var(--font-pixel);
+  font-size: 11px;
 }
 
 .modal__body pre {
-  margin: 0 0 1.2em;
+  margin: 0;
   padding: 16px;
   overflow-x: auto;
   background: var(--panel-dark);
@@ -615,6 +722,10 @@ a {
   font-family: var(--font-code);
   font-size: 14px;
   line-height: 1.6;
+}
+
+.code-block__lang + pre {
+  border-top: none;
 }
 
 .modal__body code {

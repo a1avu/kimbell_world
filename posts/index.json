@@ -1,0 +1,308 @@
+[
+  {
+    "slug": "linux-privesc",
+    "title": "linux_privesc",
+    "date": "2026-07-21",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "쉘 진입하면 privesc 전에 이 3군데부터 훑는다:",
+    "readingTime": 17
+  },
+  {
+    "slug": "reverse-shell",
+    "title": "reverse_shell",
+    "date": "2026-07-21",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "공격 대상(서버/PC)이 공격자의 컴퓨터로 먼저 연결(접속)을 시도하도록 만드는 해킹 기술",
+    "readingTime": 5
+  },
+  {
+    "slug": "web-checklist",
+    "title": "web_checklist",
+    "date": "2026-07-21",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "1. 페이지 접속 + 소스 확인 - footer나 소스에 도메인 보이면 그냥 등록하고 비교 - IP 접속 시 도메인으로 리다이렉트되면 `/etc/hosts` 등록 후 재접속",
+    "readingTime": 17
+  },
+  {
+    "slug": "broker",
+    "title": "Broker",
+    "date": "2026-07-21",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ ![[Pasted image 20260717145514.png|472]] #####…",
+    "readingTime": 4
+  },
+  {
+    "slug": "dog",
+    "title": "dog",
+    "date": "2026-07-21",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "그리고 gobuster 결과가 개많이 나왔음 ![[Pasted image 20260721145818.png|455]] ##### Initial Foothold 벡터: 노출된…",
+    "readingTime": 5
+  },
+  {
+    "slug": "oscp-junbi-peulraen",
+    "title": "OSCP 준비 플랜",
+    "date": "2026-07-21",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "> **환경:** Windows PC + VMware Workstation Player + Kali Linux x86_64 > **규칙:** 주 6일 공부 / 일요일 고정 휴식…",
+    "readingTime": 34
+  },
+  {
+    "slug": "builder",
+    "title": "builder",
+    "date": "2026-07-17",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "일단 searchsploit ㄱㄱ ```sh searchsploit jenkins > Jenkins 2.441 - Local File Inclusion |…",
+    "readingTime": 5
+  },
+  {
+    "slug": "hash",
+    "title": "HASH",
+    "date": "2026-07-15",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "-> 얘도 cve가 있을때가 있음 -> ex) [[keeper]] 덤프와 합쳐진 kdbx ## 1. 문자열 길이와 형태 (가장 일반적인 판별 기준)",
+    "readingTime": 2
+  },
+  {
+    "slug": "enumeration-checklist",
+    "title": "enumeration_checklist",
+    "date": "2026-07-15",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "**Step 2 - 전체 포트** nmap -p- --min-rate 5000 {IP} -oN allports.txt",
+    "readingTime": 5
+  },
+  {
+    "slug": "smb-checklist",
+    "title": "smb_checklist",
+    "date": "2026-07-15",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "Windows 네트워크에서 쓰는 **공유 자원 접근 프로토콜**(파일/ 프린터/ 공유자원 접근) -p : 445 ``` \\\\192.168.0.10\\share\\",
+    "readingTime": 2
+  },
+  {
+    "slug": "tools",
+    "title": "tools",
+    "date": "2026-07-15",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "익스플로잇 검색하고 싶을 때 ```sh searchsploit <프로그램>",
+    "readingTime": 2
+  },
+  {
+    "slug": "windows-privesc",
+    "title": "windows_privesc",
+    "date": "2026-07-15",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "1. `whoami /priv` → 특권 확인 2. `whoami /groups` → 그룹 확인 3. `icacls {파일}` → 파일 권한 확인",
+    "readingTime": 4
+  },
+  {
+    "slug": "keeper",
+    "title": "keeper",
+    "date": "2026-07-15",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "(진짜 이런 말 하면 안되지만 난 이런게 너무 어려움 이런건 어떻게 연습해야되지? 걍 창많던 적던 하나씩 다 들어가봐야하나?)",
+    "readingTime": 6
+  },
+  {
+    "slug": "jeeves",
+    "title": "Jeeves",
+    "date": "2026-07-15",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "50000에 고버스터 풀 문자열 때리니까 ```sh gobuster dir -u http://10.129.228.112:50000/ -w…",
+    "readingTime": 8
+  },
+  {
+    "slug": "file-transfer",
+    "title": "file_transfer",
+    "date": "2026-07-14",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "php 일시에 다음과 같이 넣음 ~~~bash echo '<?php system($_GET[\"cmd\"]); ?>' >> {파일명}.php.jpg ~~~ --- ### 특수문자…",
+    "readingTime": 1
+  },
+  {
+    "slug": "access",
+    "title": "Access",
+    "date": "2026-07-14",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "23 -> ssh가 아니라 telnet이 열려있음",
+    "readingTime": 5
+  },
+  {
+    "slug": "servmon",
+    "title": "servMon",
+    "date": "2026-07-10",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "/Users로 들어가 보니 `Nadine`과 `Nathan` 이라는 유저가 있고 각각 아래와 같은 내용으로 이뤄짐 ```sh #/Nadine/Confidential.txt…",
+    "readingTime": 7
+  },
+  {
+    "slug": "networked",
+    "title": "networked",
+    "date": "2026-07-08",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "매직 바이트 + PHP 웹쉘 파일 생성 ```bash printf '\\xff\\xd8\\xff' > exploit.php.jpg echo '<?php…",
+    "readingTime": 6
+  },
+  {
+    "slug": "updown",
+    "title": "updown",
+    "date": "2026-07-07",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "간단하게 내 서버를 하나 열어줌 ~~~sh python3 -m http.server 8000 ~~~ 디버그 모드 on/off 가 있길래 이걸 키고 ~~~…",
+    "readingTime": 16
+  },
+  {
+    "slug": "pandora",
+    "title": "pandora",
+    "date": "2026-07-06",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "80포트에 너무 아무 정보가 없어서 udp 스캔을 해봄 ```shell nmap -sU --top-ports 3 10.129.22.152 ``` -> 161/udp open…",
+    "readingTime": 10
+  },
+  {
+    "slug": "usage",
+    "title": "usage",
+    "date": "2026-07-06",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "gobuster 결과 robots.txt가 열려 있다는걸 확인할 수 있고 ~~~ User-agent: * Disallow: ~~~ 다음과 같은 내용이 있음 -> 크롤링을 차단하는…",
+    "readingTime": 12
+  },
+  {
+    "slug": "editor",
+    "title": "editor",
+    "date": "2026-07-05",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "echo \"10.129.11.227 wiki.editor.htb\" | sudo tee -a /etc/hosts ~~~",
+    "readingTime": 7
+  },
+  {
+    "slug": "db",
+    "title": "DB",
+    "date": "2026-07-03",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "> ⚠️ psql이 잘 안되면 쉘 업그레이드 먼저 > > ```shell > python3 -c 'import pty;pty.spawn(\"/bin/bash\")' > ```",
+    "readingTime": 6
+  },
+  {
+    "slug": "blind-sqli-script",
+    "title": "Blind sqli script",
+    "date": "2026-07-03",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "- 에러 메시지가 안 나오는 blind SQLi 상황 - 응답에 True/False를 구분할 수 있는 메시지가 있을 때 - sqlmap 못 쓰는 환경 (OSCP 시험 등)",
+    "readingTime": 12
+  },
+  {
+    "slug": "help",
+    "title": "_help",
+    "date": "2026-07-01",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "**graphQL 같은 경우엔 REST API와 약간 다른게 쿼리를 통해 필요한 데이터만 쏙쏙 가져올 수 있다고 함** restapi는 뭐 엔드포인트가 여러개 생기고…",
+    "readingTime": 9
+  },
+  {
+    "slug": "boardlight",
+    "title": "_BoardLight",
+    "date": "2026-06-29",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "--- ##### Open Ports",
+    "readingTime": 5
+  },
+  {
+    "slug": "cozyhosting",
+    "title": "CozyHosting",
+    "date": "2026-06-26",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "/login 접속 후 로그인 패킷 주고 받는 과정 확인해보니 bootstrap 5.2.3 ver 사용하는 듯 함 -> 이건 의미 없음",
+    "readingTime": 9
+  },
+  {
+    "slug": "soccer",
+    "title": "_soccer",
+    "date": "2026-06-26",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "-> blindsql 코드들 미리 짜봐 # Box: soccer | Linux | Easy",
+    "readingTime": 8
+  },
+  {
+    "slug": "sau",
+    "title": "sau",
+    "date": "2026-06-24",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "일단 서비스 구조 파악하기 위해 `nice` basket을 하나 만듬 토큰을 발급해줌 `4Hrac4di9aTVlYpiuo3MWuOaoiVmFILLkB1JZ_fWsYdd`",
+    "readingTime": 6
+  },
+  {
+    "slug": "busqueda",
+    "title": "Busqueda",
+    "date": "2026-06-23",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "--- ## Open Ports",
+    "readingTime": 8
+  },
+  {
+    "slug": "magic",
+    "title": "Magic",
+    "date": "2026-06-22",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "날짜 : 2026/06/21 소요시간:",
+    "readingTime": 5
+  },
+  {
+    "slug": "markup",
+    "title": "Markup",
+    "date": "2026-06-20",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "XML이 외부 엔티티를 검증 없이 처리해서 서버 파일을 읽을 수 있음",
+    "readingTime": 4
+  },
+  {
+    "slug": "obsidieon-jeongribeob",
+    "title": "옵시디언 정리법",
+    "date": "2026-06-18",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "--- 파일 명으로 링크 거는게 대부분임 **ex)** ~~~ [[OSCP/cheatsheets/linux_privesc.md]] ~~~",
+    "readingTime": 3
+  },
+  {
+    "slug": "jigjeob-chigi-gwichanheun-myeongryeongeo",
+    "title": "직접 치기 귀찮은 명령어",
+    "date": "2026-06-18",
+    "category": "미분류",
+    "tags": [],
+    "excerpt": "HTB vpn 연결",
+    "readingTime": 1
+  }
+]
