@@ -25,7 +25,7 @@
       </button>
 
       <ul class="nav__menu" id="nav-menu" data-state="closed">
-        <li><a href="#">아카이브</a></li>
+        <li><a href="#/archive" id="nav-archive-link">아카이브</a></li>
         <li><a href="#">카테고리</a></li>
         <li><a href="#">소개</a></li>
         <li><a href="#">검색</a></li>
@@ -103,10 +103,57 @@
     </div>
   </div>
 
+  <div class="archive-backdrop" id="archive-backdrop" hidden>
+    <div
+      class="archive scroll-frame"
+      id="archive-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="archive-title"
+      tabindex="-1"
+      data-mobile-view="list"
+    >
+      <header class="archive__titlebar">
+        <button class="archive__back" id="archive-back" type="button" hidden>
+          <span aria-hidden="true">←</span>
+          <span>목록</span>
+        </button>
+        <h2 class="archive__title" id="archive-title">탐험 기록 아카이브</h2>
+        <button class="archive__close" id="archive-close" type="button">
+          <span class="sr-only">닫기</span>
+          <span aria-hidden="true">×</span>
+        </button>
+      </header>
+
+      <div class="archive__body" id="archive-body">
+        <div class="archive__list-pane" id="archive-list-pane">
+          <div class="archive__search">
+            <label class="sr-only" for="archive-search">기록 검색</label>
+            <input
+              type="search"
+              id="archive-search"
+              class="archive__search-input"
+              placeholder="퀘스트 검색..."
+              autocomplete="off"
+            />
+          </div>
+          <nav class="archive__list" id="archive-list" aria-label="퀘스트 목록"></nav>
+        </div>
+
+        <div class="archive__detail-pane" id="archive-detail-pane">
+          <div class="archive__detail" id="archive-detail">
+            <p class="archive__empty">탐험할 기록을 선택하세요</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/js/main.js"></script>
   <script src="assets/js/parallax.js"></script>
   <script src="assets/js/vendor/marked.min.js"></script>
   <script src="assets/js/modal.js"></script>
   <script src="assets/js/posts.js"></script>
+  <script src="assets/js/archive.js"></script>
 </body>
 </html>
