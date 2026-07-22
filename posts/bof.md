@@ -2,8 +2,9 @@
 slug: "bof"
 title: "bof"
 date: 2026-04-27
-category: "시스템 해킹"
+category: "dreamhack"
 section: "wargame"
+group: "시스템해킹"
 tags: []
 excerpt: "기드라가 스택 변수 이름을 `local_XX` 형식으로 붙이는데, **XX가 스택 오프셋**임"
 readingTime: 1

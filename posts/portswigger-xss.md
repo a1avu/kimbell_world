@@ -2,8 +2,9 @@
 slug: "portswigger-xss"
 title: "portswigger-XSS"
 date: 2026-04-28
-category: "웹 해킹"
+category: "portswigger"
 section: "wargame"
+group: "웹해킹"
 tags: []
 excerpt: "**현재까지 푼 문제: 6/30**"
 readingTime: 13

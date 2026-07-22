@@ -68,13 +68,24 @@
     })[0];
   }
 
-  // 아카이브 좌측 목록의 고정 계층 구조. 섹션 순서와, 섹션당 "0개여도 항상
-  // 보여줄" 카테고리 목록을 여기서 관리한다 (지금은 AD가 그 대상).
-  // 이 목록에 없는 카테고리/섹션이 데이터에 나타나면 뒤쪽에 자동으로 붙는다.
+  // 아카이브 좌측 목록의 고정 계층 구조. 실제 Obsidian vault 폴더 트리를
+  // 그대로 반영한다: category만 있으면 섹션 바로 아래 카테고리(하위 폴더
+  // 없이 파일이 직접 있는 폴더)로, group + categories가 있으면 그 이름의
+  // 중간 폴더 하나를 펼쳐 그 안의 하위 폴더(카테고리)들을 중첩해서 보여준다.
+  // "0개여도 항상 보여줄" 카테고리(AD)도 이 구조에 그대로 포함한다.
+  // 이 목록에 없는 카테고리/섹션이 데이터에 나타나면 각 레벨 끝에 자동으로 붙는다.
   var SECTION_ORDER = ["OSCP", "wargame"];
-  var CATEGORY_ORDER = {
-    OSCP: ["치트시트", "리눅스", "윈도우", "AD"],
-    wargame: ["웹 해킹", "시스템 해킹", "HTB"],
+  var SECTION_STRUCTURE = {
+    OSCP: [
+      { category: "00_cheatsheets" },
+      { group: "01_boxes", categories: ["AD", "linux", "windows"] },
+      { category: "etc" },
+    ],
+    wargame: [
+      { category: "DH" },
+      { group: "시스템해킹", categories: ["dreamhack", "HTB", "시스템해킹"] },
+      { group: "웹해킹", categories: ["portswigger", "웹해킹"] },
+    ],
   };
 
   function groupByCategory(posts) {
@@ -88,9 +99,44 @@
       }
       map[cat].push(post);
     });
-    return order.map(function (cat) {
-      return { category: cat, posts: map[cat] };
+    return { map: map, order: order };
+  }
+
+  // SECTION_STRUCTURE 순서대로 카테고리/그룹 항목을 만들고, 구조에 없는
+  // 새 카테고리는 섹션 맨 끝에 그대로 덧붙인다(숨기지 않음).
+  function buildSectionItems(secPosts, structure, includeEmptyCategories) {
+    var byCat = groupByCategory(secPosts);
+    var usedCats = {};
+    var items = [];
+
+    structure.forEach(function (slot) {
+      if (slot.category) {
+        usedCats[slot.category] = true;
+        var posts = byCat.map[slot.category] || [];
+        if (posts.length === 0 && !includeEmptyCategories) return;
+        items.push({ type: "category", category: slot.category, posts: posts });
+      } else if (slot.group) {
+        var subItems = [];
+        slot.categories.forEach(function (cat) {
+          usedCats[cat] = true;
+          var posts = byCat.map[cat] || [];
+          if (posts.length === 0 && !includeEmptyCategories) return;
+          subItems.push({ category: cat, posts: posts });
+        });
+        if (subItems.length === 0) return;
+        var totalCount = subItems.reduce(function (sum, g) {
+          return sum + g.posts.length;
+        }, 0);
+        items.push({ type: "group", group: slot.group, categories: subItems, count: totalCount });
+      }
     });
+
+    byCat.order.forEach(function (cat) {
+      if (usedCats[cat]) return;
+      items.push({ type: "category", category: cat, posts: byCat.map[cat] });
+    });
+
+    return items;
   }
 
   // includeEmptyCategories: 기본 목록(검색 안 하는 상태)에서만 true로 넘겨서
@@ -120,26 +166,11 @@
       var secPosts = bySection[sec] || [];
       if (secPosts.length === 0 && !includeEmptyCategories) return;
 
-      var categories = groupByCategory(secPosts);
-      var knownOrder = CATEGORY_ORDER[sec] || [];
+      var structure = SECTION_STRUCTURE[sec] || [];
+      var items = buildSectionItems(secPosts, structure, includeEmptyCategories);
+      if (items.length === 0) return;
 
-      if (includeEmptyCategories) {
-        var byCat = {};
-        categories.forEach(function (g) {
-          byCat[g.category] = g;
-        });
-        var merged = knownOrder.map(function (cat) {
-          return byCat[cat] || { category: cat, posts: [] };
-        });
-        categories.forEach(function (g) {
-          if (knownOrder.indexOf(g.category) === -1) merged.push(g);
-        });
-        categories = merged;
-      }
-
-      if (categories.length === 0) return;
-
-      result.push({ section: sec, posts: secPosts, categories: categories });
+      result.push({ section: sec, posts: secPosts, items: items });
     });
 
     return result;
@@ -202,6 +233,29 @@
     return details;
   }
 
+  // 중간 폴더(예: "01_boxes", "시스템해킹") 하나를 감싸서 그 안의 하위
+  // 카테고리들을 중첩 렌더링한다. .archive__section(섹션)과 .archive__group
+  // (카테고리) 사이의 시각적 계층으로 별도 스타일을 쓴다.
+  function buildGroupWrapper(item) {
+    var details = document.createElement("details");
+    details.className = "archive__subsection";
+    details.open = true;
+
+    var summary = document.createElement("summary");
+    summary.className = "archive__subsection-summary";
+    summary.textContent = item.group + " (" + item.count + ")";
+    details.appendChild(summary);
+
+    var body = document.createElement("div");
+    body.className = "archive__subsection-body";
+    item.categories.forEach(function (g) {
+      body.appendChild(buildCategoryGroup(g));
+    });
+    details.appendChild(body);
+
+    return details;
+  }
+
   function buildList(posts, options) {
     listEl.innerHTML = "";
     var includeEmptyCategories = !(options && options.isFiltered);
@@ -229,8 +283,12 @@
       var sectionBody = document.createElement("div");
       sectionBody.className = "archive__section-body";
 
-      sectionGroup.categories.forEach(function (group) {
-        sectionBody.appendChild(buildCategoryGroup(group));
+      sectionGroup.items.forEach(function (item) {
+        if (item.type === "group") {
+          sectionBody.appendChild(buildGroupWrapper(item));
+        } else {
+          sectionBody.appendChild(buildCategoryGroup(item));
+        }
       });
 
       sectionDetails.appendChild(sectionBody);
@@ -250,6 +308,7 @@
       return (
         post.title.toLowerCase().indexOf(q) !== -1 ||
         (post.category || "").toLowerCase().indexOf(q) !== -1 ||
+        (post.group || "").toLowerCase().indexOf(q) !== -1 ||
         (post.excerpt || "").toLowerCase().indexOf(q) !== -1
       );
     });

@@ -9,7 +9,7 @@
 > (해당 파일들 자체가 없어짐). 최신 현황은 맨 아래 7번 작업 로그를
 > 참고하세요.
 
-**완료된 것 (총 16개 작업)**
+**완료된 것 (총 17개 작업)**
 1. **아카이브(퀘스트 로그)** — `#/archive`, `#/archive/{slug}` 라우팅,
    카테고리 그룹 + 검색 + 키보드 내비게이션 2단 패널. 데스크톱/태블릿/모바일,
    키보드 전용, 직접 URL/새로고침/뒤로가기까지 전부 실제로 브라우저에서
@@ -1028,3 +1028,112 @@ Categories/About), (3) 브랜드 아이콘 추가.
   `.hero`의 기본 배경색(`--deep-night`)이 그대로 노출되는데, 이 여백
   자체를 줄이거나 다른 방식으로 채우고 싶으시면 별도 조정이 필요합니다
   (이번 요청 범위는 "생략 없이 한 화면에 들어오게"까지였음).
+
+---
+
+### 완료: 17. 아카이브 카테고리를 실제 Obsidian vault 폴더 구조와 정확히 일치시킴
+
+**요청**: 7번 작업(vault 재구성) 때 폴더명 대신 내용 기반으로 임의 재분류됐던
+카테고리("웹 해킹", "시스템 해킹" 등)를 실제 Google Drive vault의 `OSCP`/
+`wargame` 폴더 트리와 하위 폴더까지 정확히 일치하도록 재구성.
+
+**사전 확인 (사용자에게 4가지 구조 결정 확인받음)**
+1. **깊이**: 실제 트리는 일부 3단계(예: `wargame/시스템해킹/dreamhack`,
+   `OSCP/01_boxes/linux`)라서, 기존 2단계(섹션›카테고리) 아카이브 구조를
+   3단계(섹션›그룹›카테고리)로 확장하기로 결정.
+2. **하위 폴더 없이 중간 폴더에 바로 있는 파일**(`시스템해킹/pwn.college.md`,
+   `웹해킹/webhacking.kr.md` 등): 자신이 속한 폴더 이름 그대로 카테고리 부여
+   (형제 하위폴더와 병합하지 않음).
+3. **`OSCP/etc/`의 나머지 5개 파일**(개인 메모/템플릿류, 7번 작업 때부터
+   제외됨): 이번에도 제외 유지, `OSCP 준비 플랜.md` 1개만 그대로.
+4. **카테고리 표시 이름**: 번역/한글화하지 않고 실제 폴더명 그대로 노출
+   (`linux`, `windows`, `AD`, `DH`, `dreamhack`, `HTB`, `portswigger`,
+   `00_cheatsheets`, `etc`, `시스템해킹`, `웹해킹`).
+
+**최종 구조** (사용자가 제공한 실제 `tree` 출력과 대조 검증)
+```
+OSCP (32)
+├─ 00_cheatsheets (11)          그룹 없음, 섹션 바로 아래
+├─ 01_boxes (20)                그룹
+│   ├─ AD (0)
+│   ├─ linux (16)
+│   └─ windows (4)
+└─ etc (1)                      그룹 없음, 섹션 바로 아래
+
+wargame (11)
+├─ DH (3)                       그룹 없음, 섹션 바로 아래
+├─ 시스템해킹 (4)                그룹
+│   ├─ dreamhack (2)
+│   ├─ HTB (1)
+│   └─ 시스템해킹 (1)            바로 밑 파일(pwn.college.md), 그룹과 동명
+└─ 웹해킹 (4)                    그룹
+    ├─ portswigger (3)
+    └─ 웹해킹 (1)                바로 밑 파일(webhacking.kr.md), 그룹과 동명
+```
+
+**변경 파일**
+- `posts/*.md` 43개 전부: `category:` frontmatter 필드를 위 매핑대로
+  전부 원본 폴더명으로 교체 (파이썬 스크립트로 슬러그→카테고리 매핑
+  일괄 적용, 매핑 자체는 사용자가 제공한 `tree` 출력을 직접 대조해서
+  손으로 만듦 — 43/43 전부 실제 원본 경로와 대조 검증)
+- `scripts/build-index.js`:
+  - `CATEGORY_TO_SECTION` 테이블을 새 카테고리명 기준으로 재작성
+  - `CATEGORY_TO_GROUP` 테이블 신규 추가 — 중간 폴더가 있는 카테고리만
+    등록(`linux`/`windows`/`AD`→`01_boxes`, `dreamhack`/`HTB`/`시스템해킹`→
+    `시스템해킹`, `portswigger`/`웹해킹`→`웹해킹`); `00_cheatsheets`/`etc`/
+    `DH`는 등록하지 않아 `group` 필드 자체가 안 붙음
+  - `serializeFrontmatter`에 `group` 필드 조건부 출력 추가(있을 때만)
+  - `processFile`에서 `section`과 동일하게 `group`도 category에서 항상
+    새로 도출하는 파생 필드로 처리
+  - `npm run build` 재실행 → `posts/index.json` 43개 항목 재생성,
+    카테고리별 개수(00_cheatsheets 11 / linux 16 / windows 4 / etc 1 /
+    DH 3 / dreamhack 2 / HTB 1 / 시스템해킹 1 / portswigger 3 / 웹해킹 1)
+    전부 위 트리와 정확히 일치 확인
+- `assets/js/archive.js`:
+  - `CATEGORY_ORDER`(2단계 고정 순서)를 `SECTION_STRUCTURE`(3단계, 슬롯이
+    `{category}` 또는 `{group, categories}`)로 교체
+  - `groupByCategory()`가 이제 `{map, order}`를 반환하도록 변경, 새
+    `buildSectionItems()`가 `SECTION_STRUCTURE` 순서대로 카테고리/그룹
+    항목을 만들고 구조에 없는 새 카테고리는 섹션 끝에 자동으로 붙임
+    (숨기지 않음 — 기존 "새 카테고리 자동 노출" 관례 유지)
+  - `groupBySection()`이 `categories` 대신 `items`(타입이 `category` 또는
+    `group`)를 반환하도록 변경
+  - `buildGroupWrapper()` 신규 — `<details class="archive__subsection">`로
+    중간 폴더 하나를 감싸 그 안의 카테고리들을 중첩 렌더링
+  - `buildList()`가 `item.type`에 따라 `buildCategoryGroup()` 또는
+    `buildGroupWrapper()`를 분기 호출하도록 수정
+  - `filterList()` 검색 매칭에 `post.group`도 포함(그룹 이름으로도
+    검색되게)
+- `assets/css/style.css`: `.archive__section`(섹션, 골드)과
+  `.archive__group`(카테고리, 보라) 사이에 새 중간 계층
+  `.archive__subsection`/`.archive__subsection-summary`/
+  `.archive__subsection-body` 추가 (파란색 `--accent-blue`, 기존
+  section-body와 동일한 들여쓰기 패턴 재사용)
+
+**테스트 결과** (로컬 서버 + 브라우저 자동화)
+- 데스크톱(1400px): `#/archive` 직접 진입 → OSCP(32)/00_cheatsheets(11)/
+  01_boxes(20, 그 안에 AD(0)/linux(16)/windows(4))/etc(1) 전부 트리와
+  정확히 일치하는 순서·개수로 렌더링. wargame(11)/DH(3)/시스템해킹(4,
+  안에 dreamhack(2)/HTB(1)/시스템해킹(1, pwn.college))/웹해킹(4, 안에
+  portswigger(3)/웹해킹(1, webhacking.kr)) 전부 확인
+- 글 선택(`webhacking.kr`, `dog`) → URL 해시(`#/archive/{slug}`) 갱신,
+  카테고리 배지가 새 원본 폴더명(`웹해킹`, `linux`)으로 정상 표시
+- 검색(`dreamhack`) → wargame(2)›시스템해킹(2)›dreamhack(2)만 남고 나머지
+  전부 사라짐, AD(0) 등 빈 카테고리는 검색 중엔 강제 노출 안 됨 재확인
+- 키보드 ArrowDown/Up: 그룹 중첩과 무관하게(`.archive__entry`를 평탄하게
+  쿼리) 항목 간 이동 정상
+- 모바일(390px, iframe 시뮬레이션): 3단계 들여쓰기가 좁은 화면에서도
+  잘리지 않고 스크롤로 전부 확인 가능, 글 선택→뒤로가기(목록 복귀)
+  정상 동작
+- 콘솔 에러 없음
+
+**확인 필요**
+- 폴더명을 그대로 노출하기로 해서 일부 카테고리 라벨이 영문 소문자
+  (`linux`, `dreamhack`)와 한글(`시스템해킹`, `웹해킹`)이 섞여 있습니다 —
+  이 부분에 대한 사용자 승인은 이미 받았지만, 실제로 보시고 톤이
+  안 맞으면 알려주시면 라벨만 다시 조정 가능합니다.
+- `시스템해킹`/`웹해킹`처럼 그룹과 그 안의 "바로 밑 파일" 카테고리가
+  같은 이름을 공유하는 부분(예: "시스템해킹 (4)" 그룹 안에 "시스템해킹
+  (1)" 카테고리)은 화면상 같은 텍스트가 두 번 겹쳐 보일 수 있습니다.
+  실제 폴더 구조를 그대로 반영한 결과라 의도된 것이지만, 헷갈리면
+  다른 라벨(예: "기타"/"공통")로 바꿀 수 있습니다.

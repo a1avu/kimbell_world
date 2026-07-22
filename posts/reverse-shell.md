@@ -2,7 +2,7 @@
 slug: "reverse-shell"
 title: "reverse_shell"
 date: 2026-07-21
-category: "치트시트"
+category: "00_cheatsheets"
 section: "OSCP"
 tags: []
 excerpt: "**공격자 리스너** ~~~bash nc -lvnp {PORT} ~~~"

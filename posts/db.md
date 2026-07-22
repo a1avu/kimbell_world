@@ -2,7 +2,7 @@
 slug: "db"
 title: "DB"
 date: 2026-07-03
-category: "치트시트"
+category: "00_cheatsheets"
 section: "OSCP"
 tags: []
 excerpt: "```shell # 기본 접속 psql -U <user> -h <host> -p <port>"

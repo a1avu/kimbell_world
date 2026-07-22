@@ -26,20 +26,38 @@ const CATEGORY_DEFAULT = "미분류";
 const SECTION_DEFAULT = "미분류";
 const EXCERPT_CAP = 100;
 
-// 아카이브 좌측 목록의 상위 그룹(section). 원본 Obsidian vault 폴더
-// (OSCP/... vs wargame/...) 기준으로 나눴던 걸 category 값으로 재매핑한
-// 것 — 마이그레이션 이후 원본 폴더 경로 자체는 데이터에 남아있지 않아서
-// category -> section 고정 테이블로 대체한다. 새 카테고리가 생기면 여기에도
-// 추가해야 섹션이 제대로 잡힌다 (안 하면 SECTION_DEFAULT로 빠짐).
+// 아카이브 좌측 목록의 상위 그룹(section)과 중간 그룹(group). category 값은
+// 이제 원본 Obsidian vault의 실제 하위 폴더명을 그대로 쓴다 (예: "00_cheatsheets",
+// "linux", "dreamhack"). category -> section, category -> group(있는 경우만)
+// 고정 테이블로 원본 폴더 트리를 재구성한다. 새 카테고리가 생기면 여기에도
+// 추가해야 섹션/그룹이 제대로 잡힌다 (안 하면 SECTION_DEFAULT로 빠지고
+// group은 없는 채로 섹션 바로 아래에 노출됨).
 const CATEGORY_TO_SECTION = {
-  치트시트: "OSCP",
-  리눅스: "OSCP",
-  윈도우: "OSCP",
+  "00_cheatsheets": "OSCP",
+  linux: "OSCP",
+  windows: "OSCP",
   AD: "OSCP",
-  OSCP: "OSCP",
-  "웹 해킹": "wargame",
-  "시스템 해킹": "wargame",
+  etc: "OSCP",
+  DH: "wargame",
+  dreamhack: "wargame",
   HTB: "wargame",
+  시스템해킹: "wargame",
+  portswigger: "wargame",
+  웹해킹: "wargame",
+};
+
+// 실제 폴더 구조상 중간 계층이 있는 카테고리만 등록한다(예: OSCP/01_boxes/linux
+// -> group "01_boxes"). 하위 폴더 없이 섹션 바로 아래 있는 카테고리
+// (00_cheatsheets, etc, DH)는 이 테이블에 없고, group 필드 자체가 안 붙는다.
+const CATEGORY_TO_GROUP = {
+  linux: "01_boxes",
+  windows: "01_boxes",
+  AD: "01_boxes",
+  dreamhack: "시스템해킹",
+  HTB: "시스템해킹",
+  시스템해킹: "시스템해킹",
+  portswigger: "웹해킹",
+  웹해킹: "웹해킹",
 };
 
 // --- excerpt 생성 전용 텍스트 정리 ---
@@ -204,6 +222,7 @@ function serializeFrontmatter(fields) {
     `date: ${fields.date}\n` +
     `category: ${yamlString(fields.category)}\n` +
     `section: ${yamlString(fields.section)}\n` +
+    (fields.group ? `group: ${yamlString(fields.group)}\n` : "") +
     `tags: ${yamlArray(fields.tags)}\n` +
     `excerpt: ${yamlString(fields.excerpt)}\n` +
     `readingTime: ${fields.readingTime}\n` +
@@ -274,10 +293,12 @@ function processFile(filename) {
 
   fields.readingTime = makeReadingTime(rawBodyForReadingTime);
   fields.excerpt = makeExcerpt(cleanBodyForExcerpt);
-  // section은 category에서 항상 새로 도출한다 (excerpt/readingTime처럼 완전히
-  // 파생된 필드 취급 — 사람이 직접 관리하는 값이 아니라서 category가 바뀌면
-  // 자동으로 따라가야 함).
+  // section/group은 category에서 항상 새로 도출한다 (excerpt/readingTime처럼
+  // 완전히 파생된 필드 취급 — 사람이 직접 관리하는 값이 아니라서 category가
+  // 바뀌면 자동으로 따라가야 함). group은 중간 폴더가 있는 카테고리만 값이
+  // 붙고, 없으면 undefined로 두어 frontmatter에 아예 안 써지게 한다.
   fields.section = CATEGORY_TO_SECTION[fields.category] || SECTION_DEFAULT;
+  fields.group = CATEGORY_TO_GROUP[fields.category] || undefined;
 
   const newContent = serializeFrontmatter(fields) + body.replace(/^\n*/, "\n");
 
@@ -295,17 +316,20 @@ function processFile(filename) {
     }
   }
 
+  const entry = {
+    slug: fields.slug,
+    title: fields.title,
+    date: fields.date,
+    category: fields.category,
+    section: fields.section,
+    tags: fields.tags,
+    excerpt: fields.excerpt,
+    readingTime: fields.readingTime,
+  };
+  if (fields.group) entry.group = fields.group;
+
   return {
-    entry: {
-      slug: fields.slug,
-      title: fields.title,
-      date: fields.date,
-      category: fields.category,
-      section: fields.section,
-      tags: fields.tags,
-      excerpt: fields.excerpt,
-      readingTime: fields.readingTime,
-    },
+    entry,
     warnings: warnings.map((w) => `[${slug}] ${w}`),
   };
 }

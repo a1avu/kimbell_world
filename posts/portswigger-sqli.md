@@ -2,8 +2,9 @@
 slug: "portswigger-sqli"
 title: "portswigger-sqli"
 date: 2026-07-02
-category: "웹 해킹"
+category: "portswigger"
 section: "wargame"
+group: "웹해킹"
 tags: []
 excerpt: "[레닥션: 계정 로그인 정보 (공개 블로그 노출 방지를 위해 제거)]"
 readingTime: 19

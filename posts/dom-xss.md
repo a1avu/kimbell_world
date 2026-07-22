@@ -2,7 +2,7 @@
 slug: "dom-xss"
 title: "DOM XSS"
 date: 2026-04-27
-category: "웹 해킹"
+category: "DH"
 section: "wargame"
 tags: []
 excerpt: "// 사용중인 url :…"

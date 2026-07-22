@@ -2,8 +2,9 @@
 slug: "magic"
 title: "Magic"
 date: 2026-06-22
-category: "리눅스"
+category: "linux"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "```bash # 디렉토리 열거 - 정상 파일 업로드 후 이미지 주소 복사로 /images/uploads 확인 가능 (gobuster 두번 불필요) gobuster dir -u…"
 readingTime: 5

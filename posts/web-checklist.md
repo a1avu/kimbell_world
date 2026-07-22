@@ -2,7 +2,7 @@
 slug: "web-checklist"
 title: "web_checklist"
 date: 2026-07-21
-category: "치트시트"
+category: "00_cheatsheets"
 section: "OSCP"
 tags: []
 excerpt: "1. 페이지 접속 + 소스 확인 - footer나 소스에 도메인 보이면 그냥 등록하고 비교 - IP 접속 시 도메인으로 리다이렉트되면 `/etc/hosts` 등록 후 재접속"

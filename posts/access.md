@@ -2,8 +2,9 @@
 slug: "access"
 title: "Access"
 date: 2026-07-14
-category: "윈도우"
+category: "windows"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "23 -> ssh가 아니라 telnet이 열려있음"
 readingTime: 5

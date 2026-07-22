@@ -2,8 +2,9 @@
 slug: "help"
 title: "_help"
 date: 2026-07-01
-category: "리눅스"
+category: "linux"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "**graphQL 같은 경우엔 REST API와 약간 다른게 쿼리를 통해 필요한 데이터만 쏙쏙 가져올 수 있다고 함** restapi는 뭐 엔드포인트가 여러개 생기고…"
 readingTime: 9

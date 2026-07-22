@@ -2,8 +2,9 @@
 slug: "boardlight"
 title: "_BoardLight"
 date: 2026-06-29
-category: "리눅스"
+category: "linux"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "|Port|Service| |---|---| |22|SSH| |80|HTTP|"
 readingTime: 5

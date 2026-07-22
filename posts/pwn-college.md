@@ -2,8 +2,9 @@
 slug: "pwn-college"
 title: "pwn.college"
 date: 2026-04-28
-category: "시스템 해킹"
+category: "시스템해킹"
 section: "wargame"
+group: "시스템해킹"
 tags: []
 excerpt: "ssh -i key hacker@dojo.pwn.college -> 이걸로 ssh 접속 가능"
 readingTime: 1

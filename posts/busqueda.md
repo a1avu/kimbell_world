@@ -2,8 +2,9 @@
 slug: "busqueda"
 title: "Busqueda"
 date: 2026-06-23
-category: "리눅스"
+category: "linux"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "|Port|Service| |---|---| |22|SSH| |80|HTTP|"
 readingTime: 8

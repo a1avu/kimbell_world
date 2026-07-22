@@ -2,7 +2,7 @@
 slug: "enumeration-checklist"
 title: "enumeration_checklist"
 date: 2026-07-15
-category: "치트시트"
+category: "00_cheatsheets"
 section: "OSCP"
 tags: []
 excerpt: "**Step 2 - 전체 포트** nmap -p- --min-rate 5000 {IP} -oN allports.txt"

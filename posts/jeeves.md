@@ -2,8 +2,9 @@
 slug: "jeeves"
 title: "Jeeves"
 date: 2026-07-15
-category: "윈도우"
+category: "windows"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "50000에 고버스터 풀 문자열 때리니까 ```sh gobuster dir -u http://10.129.228.112:50000/ -w…"
 readingTime: 8

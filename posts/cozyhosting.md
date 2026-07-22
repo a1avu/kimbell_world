@@ -2,8 +2,9 @@
 slug: "cozyhosting"
 title: "CozyHosting"
 date: 2026-06-26
-category: "리눅스"
+category: "linux"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "/login 접속 후 로그인 패킷 주고 받는 과정 확인해보니 bootstrap 5.2.3 ver 사용하는 듯 함 -> 이건 의미 없음"
 readingTime: 9

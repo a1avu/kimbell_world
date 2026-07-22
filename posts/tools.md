@@ -2,7 +2,7 @@
 slug: "tools"
 title: "tools"
 date: 2026-07-15
-category: "치트시트"
+category: "00_cheatsheets"
 section: "OSCP"
 tags: []
 excerpt: "searchsploit -m <익스플로잇 경로> ```"

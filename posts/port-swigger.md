@@ -2,8 +2,9 @@
 slug: "port-swigger"
 title: "port swigger"
 date: 2026-03-12
-category: "웹 해킹"
+category: "portswigger"
 section: "wargame"
+group: "웹해킹"
 tags: []
 excerpt: "1. SQL injection 2. Cross-site scripting 3. Server-side request forgery (SSRF) 4. Path traversal 5.…"
 readingTime: 2

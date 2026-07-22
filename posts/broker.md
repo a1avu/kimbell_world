@@ -2,8 +2,9 @@
 slug: "broker"
 title: "Broker"
 date: 2026-07-21
-category: "리눅스"
+category: "linux"
 section: "OSCP"
+group: "01_boxes"
 tags: []
 excerpt: "default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ Pasted image 20260717145514.png ##### Interesting…"
 readingTime: 5
