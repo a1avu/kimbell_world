@@ -131,11 +131,23 @@ a {
 }
 
 .nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-pixel);
   font-size: 15px;
   color: var(--accent-gold);
   text-decoration: none;
   letter-spacing: .02em;
+}
+
+.nav__brand-icon {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  image-rendering: pixelated;
+  border: 1px solid var(--border-mid);
 }
 
 .nav__menu {
