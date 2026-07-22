@@ -1,7 +1,7 @@
 // posts/index.json + posts/*.md 를 읽어 카드 목록을 그리고,
 // 카드 클릭 시 marked.js로 렌더링한 본문을 모달에 채운 뒤 해시 라우팅을 관리한다.
 (function () {
-  var HOME_CARD_COUNT = 5;
+  var HOME_CARD_COUNT = 6;
 
   var grid = document.getElementById("post-grid");
   if (!grid || !window.PostModal) return;
