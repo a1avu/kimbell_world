@@ -4,7 +4,7 @@ title: "smb_checklist"
 date: 2026-07-15
 category: "치트시트"
 tags: []
-excerpt: "\\SERVER\공유폴더 ```"
+excerpt: "\\\\SERVER\\공유폴더 ```"
 readingTime: 2
 ---
 

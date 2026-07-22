@@ -5,9 +5,8 @@ date: 2026-01-08
 category: "웹 해킹"
 tags: []
 excerpt: "ul이랑 pw.input_pwd.value랑 비교해서 같으면 ?510 * pw.input_pwd.value 로 리다이렉션 시킴 -> 이때 입력값 문자열이면 NAN임"
-readingTime: 9
+readingTime: 10
 ---
-
 
 ## **old-14**
 ul = 18 * 30 = 510을 해

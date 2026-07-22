@@ -9,7 +9,7 @@
 > (해당 파일들 자체가 없어짐). 최신 현황은 맨 아래 7번 작업 로그를
 > 참고하세요.
 
-**완료된 것 (총 7개 작업)**
+**완료된 것 (총 8개 작업)**
 1. **아카이브(퀘스트 로그)** — `#/archive`, `#/archive/{slug}` 라우팅,
    카테고리 그룹 + 검색 + 키보드 내비게이션 2단 패널. 데스크톱/태블릿/모바일,
    키보드 전용, 직접 URL/새로고침/뒤로가기까지 전부 실제로 브라우저에서
@@ -38,6 +38,14 @@
    불가능함을 확인하고 대체 휴리스틱 적용. 마이그레이션 중
    `portswigger-sqli.md`에서 실제 이메일+비밀번호 노출을 발견해
    즉시 레닥션. `loading="lazy"` 렌더러(`marked-setup.js`) 신규 추가.
+8. **`posts/index.json` 자동 빌드 + GitHub Actions 배포** —
+   `scripts/build-index.js`(Node, 의존성 0개)가 `posts/*.md`를 스캔해
+   frontmatter를 검증/보완하고 excerpt·readingTime을 항상 최신 본문
+   기준으로 재계산. frontmatter 없는 새 파일은 자동 생성 + 이미지
+   임베드를 실제 마크다운으로 변환. `npm run build`로 로컬 실행,
+   `.github/workflows/deploy.yml`이 main push마다 빌드 후 GitHub
+   Pages로 배포 (저장소 Pages 설정을 "GitHub Actions"로 바꾸는 수동
+   작업 필요 — 아래 8번 로그 참고). 실제 Actions 실행은 미확인.
 
 **확인/판단이 필요한 것 (사용자 결정 대기)**
 - ~~카테고리 미분류로 남은 5개 글~~ / ~~위키링크 변환 규칙 재검토~~ →
@@ -503,3 +511,105 @@ Drive의 실제 Obsidian vault(`~/Library/CloudStorage/GoogleDrive-*/내
   커밋하지 않았습니다. 나중에 vault 내용이 갱신되면 같은 방식으로
   다시 돌려야 하는데, 재사용하고 싶으시면 스크립트를 저장소 안에
   (예: `scripts/import-posts.py`) 정식으로 남겨둘지 알려주세요.
+
+---
+
+### 완료: 8. `posts/index.json` 자동 빌드 스크립트 + GitHub Actions 배포
+
+**요청**: `posts/`를 스캔해서 `index.json`을 생성하는 Node.js 빌드
+스크립트, `package.json`의 `build` 스크립트 등록, main 브랜치 push 시
+빌드 후 GitHub Pages로 자동 배포하는 워크플로우.
+
+**신규 파일**
+- `scripts/build-index.js`: 의존성 0개(순수 Node 내장 모듈만 사용),
+  `node scripts/build-index.js` 또는 `npm run build`로 실행
+- `package.json`: `"build": "node scripts/build-index.js"` 등록
+- `.github/workflows/deploy.yml`: push to main → 빌드 → GitHub Pages 배포
+
+**빌드 스크립트 동작 방식**
+1. `posts/*.md`를 파일명 순으로 스캔. **slug는 항상 실제 파일명**을
+   기준으로 삼는다 (`posts.js`/`archive.js`가 `posts/{slug}.md`로 직접
+   fetch하기 때문에 파일명과 slug가 어긋나면 안 됨 — frontmatter의
+   `slug` 필드가 파일명과 다르면 파일명 기준으로 고쳐 쓰고 경고를 출력).
+2. **frontmatter가 이미 있는 파일** (지금 43개 전부 해당): `title`/
+   `date`/`category`/`tags`는 그대로 신뢰하고 손대지 않음. `excerpt`/
+   `readingTime`만 **현재 본문 기준으로 항상 다시 계산**해서 frontmatter에
+   다시 써넣음 — "본문을 수정하면 재실행 시 최신 상태로 갱신"이라는
+   요청을 만족시키는 부분.
+3. **frontmatter가 전혀 없는 새 파일** (예: Obsidian에서 그냥 복사해온
+   원본 노트를 `posts/`에 던져넣은 경우): title(파일명 그대로)/slug(파일명)/
+   category(`"미분류"` 기본값)/tags(`[]`)/date/excerpt/readingTime을
+   전부 자동 생성해서 frontmatter를 새로 만들고, 본문의 Obsidian 이미지
+   임베드(`![[파일명|너비]]`)를 실제 마크다운 이미지 문법
+   (`![](assets/images/posts/파일명)`)으로 변환해 파일 자체에 다시 써준다.
+   이미지 파일 자체는 미리 `assets/images/posts/`에 넣어둬야 함 (스크립트가
+   이미지를 옮겨주지는 않음 — 참조는 하는데 실제 파일이 없으면 경고 출력).
+   이미지가 아닌 `[[페이지명]]` 링크는 그대로 남겨둠 (렌더링 시점에
+   `posts.js`/`archive.js`의 기존 `cleanWikilinks()`가 처리).
+4. `date` 기본값은 **git log 기준으로 그 파일이 처음 추가된 커밋의
+   날짜**를 사용한다 (아직 커밋 안 된 완전히 새 파일이면 오늘 날짜로
+   폴백). 로컬 파일 mtime을 안 쓴 이유: GitHub Actions는 매번 새로
+   체크아웃하기 때문에 파일 mtime이 전부 "지금 시각"으로 찍혀서
+   날짜 추정에 못 씀 — CI에서도 정확하게 동작하려면 git 히스토리
+   기반이어야 함. 그래서 워크플로우의 checkout 단계에 `fetch-depth: 0`
+   (전체 히스토리)를 넣었음.
+5. `excerpt`/`readingTime` 계산 로직은 7번 작업(vault 마이그레이션)
+   때 검증했던 방식을 그대로 JS로 포팅: 빈 줄 블록 단위로 나눠서
+   제목/구분선/`날짜:`·`소요시간:`/포트 목록으로 시작하는 블록은
+   건너뛰고 첫 "진짜 내용" 블록을 약 100자에서 단어 단위로 잘라
+   사용. **다만 excerpt 원문을 만들 때, 이미 실제 마크다운 이미지
+   문법(`![](url)`)으로 변환되어 있는 본문에서는 그 URL이 그대로
+   노출되는 버그를 테스트 중 발견해서** (예: `dog.md`), 이미
+   변환된 이미지 문법도 excerpt 생성 시에는 파일명만 남기도록 추가
+   처리했다 — 이 처리는 excerpt 계산 전용이고, **실제 렌더링되는
+   본문 자체는 건드리지 않는다** (렌더링 파이프라인의 `cleanWikilinks`는
+   손대지 않음).
+6. 본문이 텅 빈 파일(예: `active-directory.md`)은 excerpt가 빈 문자열로
+   나오는 걸 막기 위해 `"(아직 작성되지 않은 노트)"`로 대체.
+
+**검증**
+- 기존 43개 포스트 전체에 대해 실행 → 결과 `posts/index.json`을 git
+  diff로 확인. 실질적인 변화는: (a) frontmatter 뒤 중복 빈 줄 정리,
+  (b) 이미지가 있는 글들의 readingTime이 1분씩 소폭 증가 (원래
+  마이그레이션 스크립트는 변환 *전* 원본 위키링크 문법 길이로 readingTime을
+  쟀는데, 이 빌드 스크립트는 지금 저장된 실제 본문 — 변환된 이미지
+  마크다운 문법 포함 — 길이로 재계산하기 때문. "지금 내용 기준"이라는
+  요청에 맞는 의도된 차이라고 판단해 그대로 둠), (c) 예전 파이썬
+  스크립트에 있던 백슬래시 이스케이프 버그(`\xff` → 이제
+  `\\xff`로 올바르게 이스케이프)가 고쳐짐, (d) `portswigger-sqli.md`의
+  excerpt가 제가 손으로 골랐던 문장 대신 레닥션 표시 문구
+  (`[레닥션: ...]`) 자체가 자동으로 뽑힘 — 보안 문제는 아니고 (레닥션은
+  그대로 유지됨) 그냥 덜 다듬어진 미리보기로 바뀐 정도.
+- **새 파일 시나리오 테스트**: frontmatter 없는 임시 파일(이미지 임베드 +
+  일반 위키링크 포함)을 만들어 실행 → frontmatter 자동 생성, 이미지
+  임베드 실제 마크다운으로 변환, 일반 위키링크는 그대로 유지, excerpt/
+  readingTime 정상 계산되는 것 확인 (테스트 후 파일은 삭제).
+- **slug 불일치 시나리오 테스트**: 같은 파일을 다른 이름으로 복사해서
+  실행 → frontmatter의 `slug` 필드가 파일명 기준으로 자동 정정되고
+  경고가 출력되는 것 확인.
+- `npm run build` 정상 동작 확인.
+- 빌드 결과물을 실제로 `_site/`에 스테이징(`index.html`, `assets/`,
+  `posts/`만 복사, `.nojekyll` 추가)한 뒤 로컬 정적 서버로 띄워 브라우저로
+  확인 — 홈 카드, 아카이브(카테고리 7개 정상), 콘솔 에러 없음.
+- `.github/workflows/deploy.yml`은 `pyyaml`로 문법만 검증했고, 실제
+  GitHub Actions 실행/배포는 이 세션에서는 확인하지 못함 (원격 push가
+  필요한 부분이라 로컬에서 재현 불가) — 아래 "확인 필요" 참고.
+
+**GitHub Pages 저장소 설정 (수동 작업 필요)**
+- GitHub 저장소의 **Settings → Pages → Build and deployment → Source**를
+  **"GitHub Actions"**로 설정해야 합니다. 이건 저장소 설정이라 파일
+  수정만으로는 할 수 없고, 웹에서 직접 켜주셔야 워크플로우의
+  `actions/deploy-pages`가 정상 동작합니다.
+
+**확인 필요**
+- 실제 GitHub Actions 실행은 이 세션에서 확인 못 했습니다 — main에
+  push한 뒤 Actions 탭에서 워크플로우가 성공하는지, 배포된 사이트가
+  정상 뜨는지 확인이 필요합니다.
+- 카드/아카이브에서 같은 날짜인 글들의 정렬 순서가 예전(파이썬
+  마이그레이션 스크립트의 폴더 스캔 순서)과 달라졌습니다 — 이 빌드
+  스크립트는 파일명 알파벳 순으로 스캔하기 때문입니다. 기능적으로는
+  문제없지만(날짜 내림차순은 그대로 유지됨), 완전히 같은 순서를
+  원하시면 알려주세요.
+- 이미지 파일 자체를 `assets/images/posts/`에 넣어주는 건 이 스크립트
+  범위 밖입니다 (frontmatter/이미지 *문법* 변환만 처리) — 이미지
+  바이너리는 여전히 직접 복사해서 넣어야 합니다.

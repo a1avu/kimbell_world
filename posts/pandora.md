@@ -8,7 +8,6 @@ excerpt: "```shell gobuster dir -u http://10.129.22.152 -w…"
 readingTime: 10
 ---
 
-
 ---
 #### Box: pandora | Linux | Easy
 날짜:

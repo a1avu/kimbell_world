@@ -5,9 +5,8 @@ date: 2026-07-20
 category: "웹 해킹"
 tags: []
 excerpt: "소스코드에 다음과 같은게 있어서 확인해봄 Pasted image 20260720173242.png 살짝 Path travelsal 같은 느낌으로 ../../../ 이거 이용해서…"
-readingTime: 5
+readingTime: 6
 ---
-
 
 # LFI 지점 발견
 
