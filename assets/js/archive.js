@@ -258,7 +258,7 @@
   }
 
   function renderEmptyDetail() {
-    detailEl.innerHTML = '<p class="archive__empty">탐험할 기록을 선택하세요</p>';
+    detailEl.innerHTML = '<p class="archive__empty"> 열람할 일지를 선택하세요</p>';
   }
 
   function enhanceCodeBlocks(container) {
