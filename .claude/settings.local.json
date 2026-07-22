@@ -11,7 +11,9 @@
       "Bash(cp /tmp/nodilate_traveler-cliff.png /Volumes/beelink/my_blog/assets/images/traveler-cliff.png)",
       "Bash(cp /tmp/opening_test_palace.png /Volumes/beelink/my_blog/assets/images/palace-dragon.png)",
       "Bash(cp /tmp/opening_test_traveler.png /Volumes/beelink/my_blog/assets/images/traveler-cliff.png)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
