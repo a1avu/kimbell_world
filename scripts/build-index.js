@@ -1,15 +1,26 @@
 #!/usr/bin/env node
-// posts/*.md 를 스캔해서 posts/index.json을 재생성한다.
+// posts/ 아래를 재귀적으로 스캔해서 posts/index.json을 재생성한다.
 //
-// - frontmatter가 이미 있는 파일: title/date/category/tags는 그대로 신뢰하고,
+// posts/는 이제 flat이 아니라 posts/<section>/<category>/파일.md 구조다.
+// category/section은 원칙적으로 이 폴더 경로에서 자동으로 추론한다 —
+// posts/OSCP/리눅스/dog.md -> section="OSCP", category="리눅스".
+// 단, frontmatter에 category가 이미 명시돼 있으면 그 값을 그대로 신뢰하고
+// 폴더 추론보다 우선한다 (예: 폴더 구조와 다르게 수동으로 분류하고 싶을 때).
+// section은 항상 폴더 경로(1단계 디렉터리) 기준으로 정한다 — 파일이 실제로
+// 어느 폴더에 있는지가 곧 section이라는 게 이 구조의 핵심이라 예외를
+// 두지 않는다.
+//
+// - frontmatter가 이미 있는 파일: title/date/tags는 그대로 신뢰하고,
 //   excerpt/readingTime만 현재 본문 기준으로 다시 계산해 갱신한다.
 // - frontmatter가 아예 없는 "새로 던져넣은" 원본 노트: title/slug/date/
-//   category/tags를 자동 생성해서 frontmatter를 새로 만들어 파일 맨 위에
-//   써주고, 본문의 Obsidian 이미지 임베드(![[...]])는 실제 마크다운
-//   이미지 문법으로 변환해준다.
+//   tags를 자동 생성하고 category/section은 폴더 경로에서 추론해서
+//   frontmatter를 새로 만들어 파일 맨 위에 써주고, 본문의 Obsidian
+//   이미지 임베드(![[...]])는 실제 마크다운 이미지 문법으로 변환해준다.
 //
-// slug는 항상 "실제 파일명(확장자 제외)"을 그대로 쓴다 — posts.js/archive.js가
-// posts/{slug}.md 로 그대로 fetch하기 때문에 파일명과 slug가 어긋나면 안 된다.
+// slug는 항상 "실제 파일명(확장자 제외)"을 그대로 쓰고, index.json에는
+// posts/ 기준 상대 경로(path)도 함께 기록한다 — posts.js/archive.js가
+// posts/{path}로 fetch하기 때문에 파일명과 slug, 실제 위치와 path가
+// 어긋나면 안 된다.
 //
 // excerpt/readingTime 계산 로직은 Google Drive vault를 처음 가져올 때 썼던
 // 방식을 그대로 포팅한 것이다 (전체 34개 기존 글로 검증한 규칙).
@@ -25,40 +36,6 @@ const IMAGES_DIR = "assets/images/posts";
 const CATEGORY_DEFAULT = "미분류";
 const SECTION_DEFAULT = "미분류";
 const EXCERPT_CAP = 100;
-
-// 아카이브 좌측 목록의 상위 그룹(section)과 중간 그룹(group). category 값은
-// 이제 원본 Obsidian vault의 실제 하위 폴더명을 그대로 쓴다 (예: "00_cheatsheets",
-// "linux", "dreamhack"). category -> section, category -> group(있는 경우만)
-// 고정 테이블로 원본 폴더 트리를 재구성한다. 새 카테고리가 생기면 여기에도
-// 추가해야 섹션/그룹이 제대로 잡힌다 (안 하면 SECTION_DEFAULT로 빠지고
-// group은 없는 채로 섹션 바로 아래에 노출됨).
-const CATEGORY_TO_SECTION = {
-  "00_cheatsheets": "OSCP",
-  linux: "OSCP",
-  windows: "OSCP",
-  AD: "OSCP",
-  etc: "OSCP",
-  DH: "wargame",
-  dreamhack: "wargame",
-  HTB: "wargame",
-  시스템해킹: "wargame",
-  portswigger: "wargame",
-  웹해킹: "wargame",
-};
-
-// 실제 폴더 구조상 중간 계층이 있는 카테고리만 등록한다(예: OSCP/01_boxes/linux
-// -> group "01_boxes"). 하위 폴더 없이 섹션 바로 아래 있는 카테고리
-// (00_cheatsheets, etc, DH)는 이 테이블에 없고, group 필드 자체가 안 붙는다.
-const CATEGORY_TO_GROUP = {
-  linux: "01_boxes",
-  windows: "01_boxes",
-  AD: "01_boxes",
-  dreamhack: "시스템해킹",
-  HTB: "시스템해킹",
-  시스템해킹: "시스템해킹",
-  portswigger: "웹해킹",
-  웹해킹: "웹해킹",
-};
 
 // --- excerpt 생성 전용 텍스트 정리 ---
 // posts.js/archive.js의 cleanWikilinks()와 기본 로직(위키링크 브래킷 제거,
@@ -252,11 +229,34 @@ function todayString() {
   return new Date().toISOString().slice(0, 10);
 }
 
+// --- posts/ 재귀 스캔 ---
+
+function walkMarkdownFiles(dir) {
+  let results = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const abs = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results = results.concat(walkMarkdownFiles(abs));
+    } else if (entry.isFile() && entry.name.endsWith(".md")) {
+      results.push(abs);
+    }
+  }
+  return results;
+}
+
 // --- 메인 처리 ---
 
-function processFile(filename) {
-  const absPath = path.join(POSTS_DIR, filename);
+function processFile(relPath) {
+  // relPath 예: "OSCP/리눅스/dog.md" (posts/ 기준, 항상 "/" 구분자).
+  // 세그먼트가 3개 이상이면 [0]=section, [1]=category, 2개면 [0]=section만,
+  // 1개(플랫 파일)면 폴더 추론 자체가 불가능해서 기본값으로 빠진다.
+  const segments = relPath.split("/");
+  const filename = segments[segments.length - 1];
+  const absPath = path.join(POSTS_DIR, ...segments);
   const slug = filename.replace(/\.md$/, "");
+  const folderSection = segments.length >= 2 ? segments[0] : null;
+  const folderCategory = segments.length >= 3 ? segments[1] : null;
+
   // Windows(메모장/기본 VSCode 설정 등)에서 CRLF로 저장한 파일은 "---\n"을
   // 찾는 parseFrontmatter 정규식이 "---\r\n"과 매칭되지 않아 frontmatter
   // 전체를 못 찾고 본문으로 오인한다. 읽자마자 LF로 정규화해 무해하게 만든다
@@ -277,7 +277,14 @@ function processFile(filename) {
     }
     if (!fields.title) fields.title = slug;
     if (!fields.date) fields.date = gitAddedDate(absPath) || todayString();
-    if (!fields.category) fields.category = CATEGORY_DEFAULT;
+    // category는 frontmatter에 이미 있으면 그대로 신뢰(폴더 추론보다 우선),
+    // 없을 때만 폴더 경로에서 추론한다.
+    if (!fields.category) fields.category = folderCategory || CATEGORY_DEFAULT;
+    else if (folderCategory && fields.category !== folderCategory) {
+      warnings.push(
+        `category("${fields.category}")가 실제 폴더명("${folderCategory}")과 다름 — frontmatter 값을 그대로 사용`
+      );
+    }
     if (!fields.tags) fields.tags = [];
   } else {
     // frontmatter가 아예 없는 새 원본 노트: 처음부터 생성 + 이미지 임베드 변환
@@ -287,7 +294,7 @@ function processFile(filename) {
       slug,
       title: slug,
       date: gitAddedDate(absPath) || todayString(),
-      category: CATEGORY_DEFAULT,
+      category: folderCategory || CATEGORY_DEFAULT,
       tags: [],
     };
   }
@@ -297,12 +304,11 @@ function processFile(filename) {
 
   fields.readingTime = makeReadingTime(rawBodyForReadingTime);
   fields.excerpt = makeExcerpt(cleanBodyForExcerpt);
-  // section/group은 category에서 항상 새로 도출한다 (excerpt/readingTime처럼
-  // 완전히 파생된 필드 취급 — 사람이 직접 관리하는 값이 아니라서 category가
-  // 바뀌면 자동으로 따라가야 함). group은 중간 폴더가 있는 카테고리만 값이
-  // 붙고, 없으면 undefined로 두어 frontmatter에 아예 안 써지게 한다.
-  fields.section = CATEGORY_TO_SECTION[fields.category] || SECTION_DEFAULT;
-  fields.group = CATEGORY_TO_GROUP[fields.category] || undefined;
+  // section은 항상 실제 폴더 위치(1단계 디렉터리) 기준으로 새로 도출한다 —
+  // "어느 폴더에 있는가"가 곧 section이라는 이 구조의 원칙이라 frontmatter에
+  // 다른 값이 있어도 폴더가 이긴다. 폴더 없이 posts/ 바로 아래 있는(플랫)
+  // 파일만 기존 값 또는 기본값을 쓴다.
+  fields.section = folderSection || fields.section || SECTION_DEFAULT;
 
   const newContent = serializeFrontmatter(fields) + body.replace(/^\n*/, "\n");
 
@@ -326,15 +332,15 @@ function processFile(filename) {
     date: fields.date,
     category: fields.category,
     section: fields.section,
+    path: relPath,
     tags: fields.tags,
     excerpt: fields.excerpt,
     readingTime: fields.readingTime,
   };
-  if (fields.group) entry.group = fields.group;
 
   return {
     entry,
-    warnings: warnings.map((w) => `[${slug}] ${w}`),
+    warnings: warnings.map((w) => `[${relPath}] ${w}`),
   };
 }
 
@@ -344,25 +350,24 @@ function main() {
     process.exit(1);
   }
 
-  const files = fs
-    .readdirSync(POSTS_DIR)
-    .filter((f) => f.endsWith(".md"))
+  const relPaths = walkMarkdownFiles(POSTS_DIR)
+    .map((abs) => path.relative(POSTS_DIR, abs).split(path.sep).join("/"))
     .sort();
 
   const manifest = [];
   const allWarnings = [];
   const seenSlugs = new Map();
 
-  for (const filename of files) {
-    const { entry, warnings } = processFile(filename);
+  for (const relPath of relPaths) {
+    const { entry, warnings } = processFile(relPath);
     allWarnings.push(...warnings);
 
     if (seenSlugs.has(entry.slug)) {
       allWarnings.push(
-        `[중복 slug] "${entry.slug}" — ${seenSlugs.get(entry.slug)} 와 ${filename} 충돌`
+        `[중복 slug] "${entry.slug}" — ${seenSlugs.get(entry.slug)} 와 ${relPath} 충돌`
       );
     }
-    seenSlugs.set(entry.slug, filename);
+    seenSlugs.set(entry.slug, relPath);
 
     manifest.push(entry);
   }

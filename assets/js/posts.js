@@ -111,11 +111,17 @@
     });
   }
 
+  // posts/index.json의 path는 posts/ 기준 상대 경로(예: "OSCP/리눅스/dog.md").
+  // 한글/공백이 섞인 폴더명이 있어 세그먼트별로 encodeURIComponent 필요.
+  function postUrl(post) {
+    return "posts/" + post.path.split("/").map(encodeURIComponent).join("/");
+  }
+
   function showPost(slug, triggerEl, options) {
     var post = findPost(slug);
     if (!post) return;
 
-    fetch("posts/" + slug + ".md")
+    fetch(postUrl(post))
       .then(function (res) {
         return res.text();
       })
