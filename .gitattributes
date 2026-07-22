@@ -1,0 +1,12 @@
+# 텍스트 파일은 항상 LF로 커밋한다. Windows에서 CRLF로 저장해도 git이
+# 커밋 시점에 LF로 정규화해준다 (scripts/build-index.js도 CRLF를 방어적으로
+# 처리하지만, 저장소 차원에서 애초에 줄바꿈을 통일해두는 편이 안전함).
+* text=auto eol=lf
+
+# 바이너리로 다뤄야 하는 파일은 줄바꿈 변환 대상에서 제외
+*.png binary
+*.webp binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

@@ -257,7 +257,11 @@ function todayString() {
 function processFile(filename) {
   const absPath = path.join(POSTS_DIR, filename);
   const slug = filename.replace(/\.md$/, "");
-  const original = fs.readFileSync(absPath, "utf8");
+  // Windows(메모장/기본 VSCode 설정 등)에서 CRLF로 저장한 파일은 "---\n"을
+  // 찾는 parseFrontmatter 정규식이 "---\r\n"과 매칭되지 않아 frontmatter
+  // 전체를 못 찾고 본문으로 오인한다. 읽자마자 LF로 정규화해 무해하게 만든다
+  // (이미 LF인 파일은 변화 없음). 파일에 다시 쓸 때도 항상 LF로 저장된다.
+  const original = fs.readFileSync(absPath, "utf8").replace(/\r\n/g, "\n");
 
   const parsed = parseFrontmatter(original);
   const warnings = [];

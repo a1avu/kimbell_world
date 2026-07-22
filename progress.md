@@ -9,7 +9,7 @@
 > (해당 파일들 자체가 없어짐). 최신 현황은 맨 아래 7번 작업 로그를
 > 참고하세요.
 
-**완료된 것 (총 17개 작업)**
+**완료된 것 (총 18개 작업)**
 1. **아카이브(퀘스트 로그)** — `#/archive`, `#/archive/{slug}` 라우팅,
    카테고리 그룹 + 검색 + 키보드 내비게이션 2단 패널. 데스크톱/태블릿/모바일,
    키보드 전용, 직접 URL/새로고침/뒤로가기까지 전부 실제로 브라우저에서
@@ -1137,3 +1137,70 @@ wargame (11)
   (1)" 카테고리)은 화면상 같은 텍스트가 두 번 겹쳐 보일 수 있습니다.
   실제 폴더 구조를 그대로 반영한 결과라 의도된 것이지만, 헷갈리면
   다른 라벨(예: "기타"/"공통")로 바꿀 수 있습니다.
+
+---
+
+### 완료: 18. Windows(CRLF)에서 작성한 `.md` 파일 push 시 frontmatter 유실 버그 수정
+
+**계기**: 사용자가 "윈도우에서 md 파일을 작성해서 push해도 되는 코드인가?"라고
+질문. 확인 안 하고 대답하는 대신, Windows 메모장/기본 VSCode 설정이 흔히
+저장하는 CRLF(`\r\n`) 줄바꿈 파일을 실제로 만들어서 `node scripts/
+build-index.js`에 직접 통과시켜 재현 테스트함.
+
+**발견한 버그 (재현 확인됨)**: `parseFrontmatter()`의 정규식
+(`/^---\n([\s\S]*?)\n---\n?/`)이 리터럴 `---\n`을 찾는데, CRLF 파일은
+`---\r\n`이라 매칭에 실패합니다. 그 결과:
+1. 정상적으로 작성된 frontmatter(title/category/section/group 등)를
+   통째로 "frontmatter 없음"으로 오판
+2. `title`은 슬러그 그대로, `category`/`section`은 `"미분류"`(기본값)로
+   덮어씀 — 17번 작업에서 만든 OSCP/wargame 트리 구조에서 이탈해
+   아카이브에 제대로 안 뜸
+3. **더 심각한 부분**: 원본 frontmatter 블록 전체가 사라지지 않고
+   그대로 살아남아서, 새로 생성된 (잘못된) frontmatter 아래 **본문
+   텍스트처럼 그대로 노출**됨 (`slug: "..."  title: "..."  category: "..."`
+   같은 줄들이 실제 발행되는 글 내용에 그대로 보이게 됨) — 실제
+   테스트 파일로 재현 후 결과를 직접 확인.
+
+**변경 파일**
+- `scripts/build-index.js`: `processFile()`에서 파일을 읽자마자
+  `.replace(/\r\n/g, "\n")`로 LF 정규화 (이미 LF인 파일은 무해,
+  변화 없음 — 기존 43개 포스트로 재실행해서 `index.json`이 바이트
+  단위로 동일하게 나오는 것으로 확인). 파일에 다시 쓸 때도
+  `serializeFrontmatter()`가 원래도 `\n`만 쓰므로 항상 LF로 저장됨.
+- `.gitattributes` (신규): `* text=auto eol=lf`로 텍스트 파일은 커밋
+  시점에 git이 LF로 정규화하도록 저장소 차원에서도 강제 (스크립트
+  방어와 별개로 이중 안전장치 — 사용자의 로컬 git `core.autocrlf`
+  설정에 의존하지 않게 함). 이미지 확장자는 `binary`로 명시해 줄바꿈
+  변환 대상에서 제외.
+
+**테스트 결과**
+- CRLF frontmatter 테스트 파일(title/category="linux"/section="OSCP"/
+  group="01_boxes" 포함)을 만들어 수정 전 스크립트에 통과 → 위에서
+  설명한 버그 그대로 재현(frontmatter 유실 + 본문에 노출) 확인
+- 수정 후 같은 파일로 재실행 → title/category/section/group 전부
+  정확히 보존, 본문에 frontmatter 텍스트 안 섞임, `index.json`에도
+  `"category": "linux", "section": "OSCP", "group": "01_boxes"`로
+  정확히 반영 확인
+- 기존 43개 포스트로 재빌드 → `index.json`이 이전 커밋과 완전히
+  동일(diff 없음)해서 회귀 없음 확인
+- 저장소 전체를 CRLF 문자 기준으로 grep해서 기존에 이미 커밋된 파일
+  중 CRLF가 섞인 게 없는지 확인(없음) — `.gitattributes` 추가만으로
+  기존 파일을 다시 정규화(`git add --renormalize`)할 필요는 없었음
+- 테스트에 쓴 파일은 저장소에 커밋하지 않고 삭제함
+
+**결론 (사용자 질문에 대한 답)**
+- git 자체는 줄바꿈과 무관하게 커밋/push를 막지 않아서 "push가
+  되냐/안 되냐"만 보면 원래도 문제없었습니다. 실제 문제는 push 이후
+  GitHub Actions가 돌리는 `build-index.js`가 CRLF frontmatter를
+  못 읽고 조용히 데이터를 깨뜨리는 부분이었고, 이번 수정으로 해결됨.
+- 다만 frontmatter를 아예 안 쓰고 Obsidian 원본 노트를 그대로
+  `posts/`에 던져넣는 경우(9번/17번 작업에서 설명한 "새 파일" 경로)는
+  이 버그와 무관하게 원래도 `category`가 자동으로 `"미분류"`(기본값)로
+  잡힙니다 — 17번 작업에서 만든 폴더 매핑 테이블은 "이미 있는
+  category 값"을 보고 section/group을 도출하는 방식이라, 새 글을
+  OSCP/wargame 트리 안에 제대로 끼워 넣으려면 `category` 필드를
+  실제 폴더명(예: `"linux"`, `"dreamhack"`) 중 하나로 직접 지정해야
+  합니다. 이건 이번에 고친 버그와는 별개의, 원래부터 있던 동작입니다.
+
+**확인 필요**
+- 없음 (재현 테스트로 검증 완료).
