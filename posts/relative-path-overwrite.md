@@ -3,6 +3,7 @@ slug: "relative-path-overwrite"
 title: "Relative Path Overwrite"
 date: 2026-07-21
 category: "웹 해킹"
+section: "wargame"
 tags: []
 excerpt: "**Grade** : G4 **Date** : 2026 07 20"
 readingTime: 4

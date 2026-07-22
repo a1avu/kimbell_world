@@ -3,6 +3,7 @@ slug: "usage"
 title: "usage"
 date: 2026-07-06
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "gobuster 결과 robots.txt가 열려 있다는걸 확인할 수 있고 ~~~ User-agent: * Disallow: ~~~ 다음과 같은 내용이 있음 -> 크롤링을 차단하는…"
 readingTime: 12

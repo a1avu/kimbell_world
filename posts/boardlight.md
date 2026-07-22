@@ -3,6 +3,7 @@ slug: "boardlight"
 title: "_BoardLight"
 date: 2026-06-29
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "|Port|Service| |---|---| |22|SSH| |80|HTTP|"
 readingTime: 5

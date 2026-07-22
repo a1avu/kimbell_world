@@ -3,6 +3,7 @@ slug: "busqueda"
 title: "Busqueda"
 date: 2026-06-23
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "|Port|Service| |---|---| |22|SSH| |80|HTTP|"
 readingTime: 8

@@ -3,6 +3,7 @@ slug: "keeper"
 title: "keeper"
 date: 2026-07-15
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "(진짜 이런 말 하면 안되지만 난 이런게 너무 어려움 이런건 어떻게 연습해야되지? 걍 창많던 적던 하나씩 다 들어가봐야하나?)"
 readingTime: 6

@@ -3,6 +3,7 @@ slug: "editor"
 title: "editor"
 date: 2026-07-05
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "echo \"10.129.11.227 wiki.editor.htb\" | sudo tee -a /etc/hosts ~~~"
 readingTime: 7

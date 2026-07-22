@@ -3,6 +3,7 @@ slug: "pandora"
 title: "pandora"
 date: 2026-07-06
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "```shell gobuster dir -u http://10.129.22.152 -w…"
 readingTime: 10

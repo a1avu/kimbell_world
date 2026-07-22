@@ -3,6 +3,7 @@ slug: "updown"
 title: "updown"
 date: 2026-07-07
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "간단하게 내 서버를 하나 열어줌 ~~~sh python3 -m http.server 8000 ~~~ 디버그 모드 on/off 가 있길래 이걸 키고 ~~~…"
 readingTime: 17

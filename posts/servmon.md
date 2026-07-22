@@ -3,6 +3,7 @@ slug: "servmon"
 title: "servMon"
 date: 2026-07-10
 category: "윈도우"
+section: "OSCP"
 tags: []
 excerpt: "/Users로 들어가 보니 `Nadine`과 `Nathan` 이라는 유저가 있고 각각 아래와 같은 내용으로 이뤄짐 ```sh #/Nadine/Confidential.txt…"
 readingTime: 7

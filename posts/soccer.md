@@ -3,6 +3,7 @@ slug: "soccer"
 title: "_soccer"
 date: 2026-06-26
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "-> blindsql 코드들 미리 짜봐 # Box: soccer | Linux | Easy"
 readingTime: 8

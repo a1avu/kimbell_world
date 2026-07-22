@@ -23,7 +23,24 @@ const POSTS_DIR = path.join(REPO_ROOT, "posts");
 const IMAGES_DIR = "assets/images/posts";
 
 const CATEGORY_DEFAULT = "미분류";
+const SECTION_DEFAULT = "미분류";
 const EXCERPT_CAP = 100;
+
+// 아카이브 좌측 목록의 상위 그룹(section). 원본 Obsidian vault 폴더
+// (OSCP/... vs wargame/...) 기준으로 나눴던 걸 category 값으로 재매핑한
+// 것 — 마이그레이션 이후 원본 폴더 경로 자체는 데이터에 남아있지 않아서
+// category -> section 고정 테이블로 대체한다. 새 카테고리가 생기면 여기에도
+// 추가해야 섹션이 제대로 잡힌다 (안 하면 SECTION_DEFAULT로 빠짐).
+const CATEGORY_TO_SECTION = {
+  치트시트: "OSCP",
+  리눅스: "OSCP",
+  윈도우: "OSCP",
+  AD: "OSCP",
+  OSCP: "OSCP",
+  "웹 해킹": "wargame",
+  "시스템 해킹": "wargame",
+  HTB: "wargame",
+};
 
 // --- excerpt 생성 전용 텍스트 정리 ---
 // posts.js/archive.js의 cleanWikilinks()와 기본 로직(위키링크 브래킷 제거,
@@ -186,6 +203,7 @@ function serializeFrontmatter(fields) {
     `title: ${yamlString(fields.title)}\n` +
     `date: ${fields.date}\n` +
     `category: ${yamlString(fields.category)}\n` +
+    `section: ${yamlString(fields.section)}\n` +
     `tags: ${yamlArray(fields.tags)}\n` +
     `excerpt: ${yamlString(fields.excerpt)}\n` +
     `readingTime: ${fields.readingTime}\n` +
@@ -256,6 +274,10 @@ function processFile(filename) {
 
   fields.readingTime = makeReadingTime(rawBodyForReadingTime);
   fields.excerpt = makeExcerpt(cleanBodyForExcerpt);
+  // section은 category에서 항상 새로 도출한다 (excerpt/readingTime처럼 완전히
+  // 파생된 필드 취급 — 사람이 직접 관리하는 값이 아니라서 category가 바뀌면
+  // 자동으로 따라가야 함).
+  fields.section = CATEGORY_TO_SECTION[fields.category] || SECTION_DEFAULT;
 
   const newContent = serializeFrontmatter(fields) + body.replace(/^\n*/, "\n");
 
@@ -279,6 +301,7 @@ function processFile(filename) {
       title: fields.title,
       date: fields.date,
       category: fields.category,
+      section: fields.section,
       tags: fields.tags,
       excerpt: fields.excerpt,
       readingTime: fields.readingTime,

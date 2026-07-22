@@ -3,6 +3,7 @@ slug: "smb-checklist"
 title: "smb_checklist"
 date: 2026-07-15
 category: "치트시트"
+section: "OSCP"
 tags: []
 excerpt: "\\\\SERVER\\공유폴더 ```"
 readingTime: 2

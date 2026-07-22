@@ -930,6 +930,43 @@ a {
   padding: 8px;
 }
 
+.archive__section {
+  margin-bottom: 10px;
+}
+
+.archive__section-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 8px 6px;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  border-bottom: 1px dashed var(--border-mid);
+}
+
+.archive__section-summary::-webkit-details-marker {
+  display: none;
+}
+
+.archive__section-summary::before {
+  content: "▸ ";
+}
+
+.archive__section[open] > .archive__section-summary::before {
+  content: "▾ ";
+}
+
+.archive__section-summary:focus-visible {
+  outline: 2px solid var(--accent-blue);
+}
+
+.archive__section-body {
+  padding-left: 10px;
+  border-left: 2px solid var(--border-mid);
+  margin: 4px 0 4px 6px;
+}
+
 .archive__group {
   margin-bottom: 4px;
 }

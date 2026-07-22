@@ -68,6 +68,15 @@
     })[0];
   }
 
+  // 아카이브 좌측 목록의 고정 계층 구조. 섹션 순서와, 섹션당 "0개여도 항상
+  // 보여줄" 카테고리 목록을 여기서 관리한다 (지금은 AD가 그 대상).
+  // 이 목록에 없는 카테고리/섹션이 데이터에 나타나면 뒤쪽에 자동으로 붙는다.
+  var SECTION_ORDER = ["OSCP", "wargame"];
+  var CATEGORY_ORDER = {
+    OSCP: ["치트시트", "리눅스", "윈도우", "AD"],
+    wargame: ["웹 해킹", "시스템 해킹", "HTB"],
+  };
+
   function groupByCategory(posts) {
     var map = {};
     var order = [];
@@ -84,6 +93,58 @@
     });
   }
 
+  // includeEmptyCategories: 기본 목록(검색 안 하는 상태)에서만 true로 넘겨서
+  // AD처럼 글이 0개인 카테고리도 계속 보이게 한다. 검색 중에는 false로 넘겨서
+  // 매칭 안 되는 카테고리는 그냥 사라지게 한다.
+  function groupBySection(posts, includeEmptyCategories) {
+    var bySection = {};
+    var sectionOrder = [];
+
+    posts.forEach(function (post) {
+      var sec = post.section || "미분류";
+      if (!bySection[sec]) {
+        bySection[sec] = [];
+        sectionOrder.push(sec);
+      }
+      bySection[sec].push(post);
+    });
+
+    var allSections = SECTION_ORDER.concat(
+      sectionOrder.filter(function (s) {
+        return SECTION_ORDER.indexOf(s) === -1;
+      })
+    );
+
+    var result = [];
+    allSections.forEach(function (sec) {
+      var secPosts = bySection[sec] || [];
+      if (secPosts.length === 0 && !includeEmptyCategories) return;
+
+      var categories = groupByCategory(secPosts);
+      var knownOrder = CATEGORY_ORDER[sec] || [];
+
+      if (includeEmptyCategories) {
+        var byCat = {};
+        categories.forEach(function (g) {
+          byCat[g.category] = g;
+        });
+        var merged = knownOrder.map(function (cat) {
+          return byCat[cat] || { category: cat, posts: [] };
+        });
+        categories.forEach(function (g) {
+          if (knownOrder.indexOf(g.category) === -1) merged.push(g);
+        });
+        categories = merged;
+      }
+
+      if (categories.length === 0) return;
+
+      result.push({ section: sec, posts: secPosts, categories: categories });
+    });
+
+    return result;
+  }
+
   function markActiveEntry() {
     var entries = Array.prototype.slice.call(listEl.querySelectorAll(".archive__entry"));
     entries.forEach(function (entry) {
@@ -97,11 +158,56 @@
     });
   }
 
-  function buildList(posts) {
-    listEl.innerHTML = "";
-    var groups = groupByCategory(posts);
+  function buildCategoryGroup(group) {
+    var details = document.createElement("details");
+    details.className = "archive__group";
+    details.open = true;
 
-    if (groups.length === 0) {
+    var summary = document.createElement("summary");
+    summary.className = "archive__group-summary";
+    summary.textContent = group.category + " (" + group.posts.length + ")";
+    details.appendChild(summary);
+
+    var ul = document.createElement("ul");
+    ul.className = "archive__group-list";
+
+    group.posts.forEach(function (post) {
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.className = "archive__entry";
+      a.href = "#/archive/" + post.slug;
+      a.dataset.slug = post.slug;
+
+      var titleSpan = document.createElement("span");
+      titleSpan.className = "archive__entry-title";
+      titleSpan.textContent = post.title;
+
+      var dateSpan = document.createElement("span");
+      dateSpan.className = "archive__entry-date";
+      dateSpan.textContent = post.date.replace(/-/g, ".");
+
+      a.appendChild(titleSpan);
+      a.appendChild(dateSpan);
+
+      a.addEventListener("click", function (event) {
+        event.preventDefault();
+        selectPost(post.slug, { pushHistory: true });
+      });
+
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+
+    details.appendChild(ul);
+    return details;
+  }
+
+  function buildList(posts, options) {
+    listEl.innerHTML = "";
+    var includeEmptyCategories = !(options && options.isFiltered);
+    var sections = groupBySection(posts, includeEmptyCategories);
+
+    if (sections.length === 0) {
       var empty = document.createElement("p");
       empty.className = "archive__list-empty";
       empty.textContent = "일치하는 기록이 없습니다.";
@@ -109,48 +215,26 @@
       return;
     }
 
-    groups.forEach(function (group) {
-      var details = document.createElement("details");
-      details.className = "archive__group";
-      details.open = true;
+    sections.forEach(function (sectionGroup) {
+      var sectionDetails = document.createElement("details");
+      sectionDetails.className = "archive__section";
+      sectionDetails.open = true;
 
-      var summary = document.createElement("summary");
-      summary.className = "archive__group-summary";
-      summary.textContent = group.category + " (" + group.posts.length + ")";
-      details.appendChild(summary);
+      var sectionSummary = document.createElement("summary");
+      sectionSummary.className = "archive__section-summary";
+      sectionSummary.textContent =
+        sectionGroup.section + " (" + sectionGroup.posts.length + ")";
+      sectionDetails.appendChild(sectionSummary);
 
-      var ul = document.createElement("ul");
-      ul.className = "archive__group-list";
+      var sectionBody = document.createElement("div");
+      sectionBody.className = "archive__section-body";
 
-      group.posts.forEach(function (post) {
-        var li = document.createElement("li");
-        var a = document.createElement("a");
-        a.className = "archive__entry";
-        a.href = "#/archive/" + post.slug;
-        a.dataset.slug = post.slug;
-
-        var titleSpan = document.createElement("span");
-        titleSpan.className = "archive__entry-title";
-        titleSpan.textContent = post.title;
-
-        var dateSpan = document.createElement("span");
-        dateSpan.className = "archive__entry-date";
-        dateSpan.textContent = post.date.replace(/-/g, ".");
-
-        a.appendChild(titleSpan);
-        a.appendChild(dateSpan);
-
-        a.addEventListener("click", function (event) {
-          event.preventDefault();
-          selectPost(post.slug, { pushHistory: true });
-        });
-
-        li.appendChild(a);
-        ul.appendChild(li);
+      sectionGroup.categories.forEach(function (group) {
+        sectionBody.appendChild(buildCategoryGroup(group));
       });
 
-      details.appendChild(ul);
-      listEl.appendChild(details);
+      sectionDetails.appendChild(sectionBody);
+      listEl.appendChild(sectionDetails);
     });
 
     markActiveEntry();
@@ -169,7 +253,7 @@
         (post.excerpt || "").toLowerCase().indexOf(q) !== -1
       );
     });
-    buildList(filtered);
+    buildList(filtered, { isFiltered: true });
   }
 
   function renderEmptyDetail() {

@@ -3,6 +3,7 @@ slug: "builder"
 title: "builder"
 date: 2026-07-17
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "일단 searchsploit ㄱㄱ ```sh searchsploit jenkins > Jenkins 2.441 - Local File Inclusion |…"
 readingTime: 5

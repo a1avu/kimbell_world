@@ -3,6 +3,7 @@ slug: "sau"
 title: "sau"
 date: 2026-06-24
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "일단 서비스 구조 파악하기 위해 `nice` basket을 하나 만듬 토큰을 발급해줌 `4Hrac4di9aTVlYpiuo3MWuOaoiVmFILLkB1JZ_fWsYdd`"
 readingTime: 6

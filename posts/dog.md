@@ -3,6 +3,7 @@ slug: "dog"
 title: "dog"
 date: 2026-07-21
 category: "리눅스"
+section: "OSCP"
 tags: []
 excerpt: "그리고 gobuster 결과가 개많이 나왔음 Pasted image 20260721145818.png ##### Initial Foothold 벡터: 노출된 `.git` →…"
 readingTime: 6

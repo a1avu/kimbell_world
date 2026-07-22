@@ -3,6 +3,7 @@ slug: "windows-privesc"
 title: "windows_privesc"
 date: 2026-07-15
 category: "치트시트"
+section: "OSCP"
 tags: []
 excerpt: "뭐 못찾겠을땐 public 계정도 들어가 보셈"
 readingTime: 4

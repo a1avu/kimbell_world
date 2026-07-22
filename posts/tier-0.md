@@ -3,6 +3,7 @@ slug: "tier-0"
 title: "Tier-0"
 date: 2026-04-27
 category: "HTB"
+section: "wargame"
 tags: []
 excerpt: "~~~bash nmap -sV -p 21 10.129.145.116 ~~~ -sV : 서비스 버전 보는 방법"
 readingTime: 2
