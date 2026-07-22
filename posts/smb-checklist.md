@@ -2,9 +2,9 @@
 slug: "smb-checklist"
 title: "smb_checklist"
 date: 2026-07-15
-category: "네트워크"
+category: "치트시트"
 tags: []
-excerpt: "Windows 네트워크에서 쓰는 **공유 자원 접근 프로토콜**(파일/ 프린터/ 공유자원 접근) -p : 445 ``` \\\\192.168.0.10\\share\\"
+excerpt: "\\SERVER\공유폴더 ```"
 readingTime: 2
 ---
 

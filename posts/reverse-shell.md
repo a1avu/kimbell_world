@@ -2,9 +2,9 @@
 slug: "reverse-shell"
 title: "reverse_shell"
 date: 2026-07-21
-category: "시스템 해킹"
+category: "치트시트"
 tags: []
-excerpt: "공격 대상(서버/PC)이 공격자의 컴퓨터로 먼저 연결(접속)을 시도하도록 만드는 해킹 기술"
+excerpt: "**공격자 리스너** ~~~bash nc -lvnp {PORT} ~~~"
 readingTime: 5
 ---
 

@@ -2,7 +2,7 @@
 slug: "access"
 title: "Access"
 date: 2026-07-14
-category: "HTB"
+category: "윈도우"
 tags: []
 excerpt: "23 -> ssh가 아니라 telnet이 열려있음"
 readingTime: 5
@@ -78,7 +78,7 @@ password: 4Cc3ssC0ntr0ller
 ##### Privilege Escalation
 벡터: 
 명령어: 
-![[Pasted image 20260713182739.png]]
+![](assets/images/posts/Pasted%20image%2020260713182739.png)
 여기 보니까 
 ```sh
 runas /user:ACCESS\Administrator /savecred

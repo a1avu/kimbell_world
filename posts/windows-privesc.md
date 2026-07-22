@@ -2,9 +2,9 @@
 slug: "windows-privesc"
 title: "windows_privesc"
 date: 2026-07-15
-category: "시스템 해킹"
+category: "치트시트"
 tags: []
-excerpt: "1. `whoami /priv` → 특권 확인 2. `whoami /groups` → 그룹 확인 3. `icacls {파일}` → 파일 권한 확인"
+excerpt: "뭐 못찾겠을땐 public 계정도 들어가 보셈"
 readingTime: 4
 ---
 

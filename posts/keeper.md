@@ -2,7 +2,7 @@
 slug: "keeper"
 title: "keeper"
 date: 2026-07-15
-category: "HTB"
+category: "리눅스"
 tags: []
 excerpt: "(진짜 이런 말 하면 안되지만 난 이런게 너무 어려움 이런건 어떻게 연습해야되지? 걍 창많던 적던 하나씩 다 들어가봐야하나?)"
 readingTime: 6
@@ -25,7 +25,7 @@ echo "10.129.229.41 tickets.keeper.htb" | sudo tee -a /etc/hosts
 ##### Initial Foothold
 벡터:
 명령어:
-![[Pasted image 20260715204650.png|457]]
+![](assets/images/posts/Pasted%20image%2020260715204650.png)
 -> CVE 없음
 저기로 들어가서 Edit 들어가면 크레덴셜 (Welcome2023!) 나옴
 
@@ -64,9 +64,9 @@ hashcat -m 13400 -a 0 ./cred.hash /usr/share/wordlists/rockyou.txt
 이 zip 파일 안에 파일이 두개 있었잖슴 `kdbx dump` 검색해보니까 나왔음
 [CVE-2023-32784](https://github.com/vdohney/keepass-password-dumper)
 이걸 사용해서 dump 안에 있는 pw를 유추해볼 수 있음
-![[Pasted image 20260715230157.png|480]]
+![](assets/images/posts/Pasted%20image%2020260715230157.png)
 검색해보니까 rødgrød med fløde 이게 마스터 pw인듯함
-![[Pasted image 20260715230230.png|371]]
+![](assets/images/posts/Pasted%20image%2020260715230230.png)
 
 ```sh
 kpcli --kdb=passcodes.kdbx

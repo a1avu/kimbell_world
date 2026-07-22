@@ -2,7 +2,7 @@
 slug: "oscp-junbi-peulraen"
 title: "OSCP 준비 플랜"
 date: 2026-07-21
-category: "미분류"
+category: "OSCP"
 tags: []
 excerpt: "> **환경:** Windows PC + VMware Workstation Player + Kali Linux x86_64 > **규칙:** 주 6일 공부 / 일요일 고정 휴식…"
 readingTime: 34

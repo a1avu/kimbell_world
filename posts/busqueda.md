@@ -2,9 +2,9 @@
 slug: "busqueda"
 title: "Busqueda"
 date: 2026-06-23
-category: "HTB"
+category: "리눅스"
 tags: []
-excerpt: "--- ## Open Ports"
+excerpt: "|Port|Service| |---|---| |22|SSH| |80|HTTP|"
 readingTime: 8
 ---
 

@@ -2,9 +2,9 @@
 slug: "db"
 title: "DB"
 date: 2026-07-03
-category: "미분류"
+category: "치트시트"
 tags: []
-excerpt: "> ⚠️ psql이 잘 안되면 쉘 업그레이드 먼저 > > ```shell > python3 -c 'import pty;pty.spawn(\"/bin/bash\")' > ```"
+excerpt: "```shell # 기본 접속 psql -U <user> -h <host> -p <port>"
 readingTime: 6
 ---
 

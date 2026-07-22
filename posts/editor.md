@@ -2,7 +2,7 @@
 slug: "editor"
 title: "editor"
 date: 2026-07-05
-category: "HTB"
+category: "리눅스"
 tags: []
 excerpt: "echo \"10.129.11.227 wiki.editor.htb\" | sudo tee -a /etc/hosts ~~~"
 readingTime: 7

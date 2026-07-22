@@ -2,9 +2,9 @@
 slug: "boardlight"
 title: "_BoardLight"
 date: 2026-06-29
-category: "HTB"
+category: "리눅스"
 tags: []
-excerpt: "--- ##### Open Ports"
+excerpt: "|Port|Service| |---|---| |22|SSH| |80|HTTP|"
 readingTime: 5
 ---
 

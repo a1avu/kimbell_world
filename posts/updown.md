@@ -2,7 +2,7 @@
 slug: "updown"
 title: "updown"
 date: 2026-07-07
-category: "HTB"
+category: "리눅스"
 tags: []
 excerpt: "간단하게 내 서버를 하나 열어줌 ~~~sh python3 -m http.server 8000 ~~~ 디버그 모드 on/off 가 있길래 이걸 키고 ~~~…"
 readingTime: 16
@@ -51,7 +51,7 @@ hi im kimbell~!
 http://localhost/<script>alert(1)</script>
 ~~~
 -> 이러면 XSS는 됨
-![[Pasted image 20260706142724.png|368]]
+![](assets/images/posts/Pasted%20image%2020260706142724.png)
 근데 또 입력칸이 공백을 필터링 하는 듯 함
 	-> 뭔가 xss로 리버스쉘을 실행한다 던지 아니면 커맨드를 실행하는 그런게 있어야될거 같은디 그런건 없는 듯 함함
 
@@ -142,11 +142,11 @@ $websites = explode("\n",file_get_contents($final_path));
 -> 매직바이트 검사는 안하는걸 알 수 있음
 -> phar 형식도 php파일 형식 중에 하나여서 우회할 수 있다고 함
 -> zip 파일 확장자 조작해서 압축할 수 있음
-![[Pasted image 20260707163523.png|144]]
+![](assets/images/posts/Pasted%20image%2020260707163523.png)
 
 일단 dev.siteisup.htb 접속부터 burp 이용해서 ㄱㄱ  -> 확장프로그램 이용도 ㄱㄴ
 
-![[Pasted image 20260706185324.png|401]]
+![](assets/images/posts/Pasted%20image%2020260706185324.png)
 -> 두둥 !
 
 그리고 코드를 보면 매직바이트 검사는 안하는걸 알 수 있으니 아래와 같이 할 수도 있음
@@ -178,11 +178,11 @@ http://dev.siteisup.htb/index.php/?page=phar://uploads/{dir_name}/exploit.k/info
 ~~~
 
 들어와서 보면 이런게 있음
-![[Pasted image 20260707164352.png]]
+![](assets/images/posts/Pasted%20image%2020260707164352.png)
 
 [dfunc-bypasser](https://github.com/teambi0s/dfunc-bypasser/tree/master) : 이 툴 사용하면 phpinfo에 기록된 못쓰는 기능 중에 해당 목록에 없는 위험한 함수를 추릴 수 있음
 해당 페이지에 들어오게 하려면 헤더 값 추가해줘야 되니까 추가 해줌
-![[Pasted image 20260707164814.png|367]]
+![](assets/images/posts/Pasted%20image%2020260707164814.png)
 ~~~sh
 python2 dfunc-bypasser.py --url http://dev.siteisup.htb/index.php/?page=phar://uploads/c445bd12129d20543f7a30caa8188acc/exploit.k/info
 
@@ -222,16 +222,16 @@ python2 dfunc-bypasser.py --url http://dev.siteisup.htb/index.php/?page=phar://u
 nc -lnvp 5555
 ~~~
 이러면 쉘 성공
-![[Pasted image 20260707165619.png]]
+![](assets/images/posts/Pasted%20image%2020260707165619.png)
 
 ##### Privilege Escalation (webshell -> developer)
 벡터:
 명령어:
-![[Pasted image 20260707165848.png]]
+![](assets/images/posts/Pasted%20image%2020260707165848.png)
 -> developer라는 유저가 있다고 함, 아쉽게도 user.txt는 못봄
 
 /dev라는 곳이 있는데 이 안에 python파일과 정체모를 파일이 하나 있음
-![[Pasted image 20260707170520.png]]
+![](assets/images/posts/Pasted%20image%2020260707170520.png)
 코드 내용은 간단한데 둘다 실행하면 그냥 꺼져 버림
 https://dokhakdubini.tistory.com/476
 여길 읽어보면 python2는  input을 통해서 eval함수를 실행하는 바람에 builtin함수를 이용할 수 있다고 함
@@ -276,7 +276,7 @@ cat user.txt
 ##### Privilege Escalation (developer -> root)
 벡터:
 명령어:
-![[Pasted image 20260707172151.png]]
+![](assets/images/posts/Pasted%20image%2020260707172151.png)
 
 실행해보니 
 ~~~sh

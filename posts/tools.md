@@ -2,9 +2,9 @@
 slug: "tools"
 title: "tools"
 date: 2026-07-15
-category: "미분류"
+category: "치트시트"
 tags: []
-excerpt: "익스플로잇 검색하고 싶을 때 ```sh searchsploit <프로그램>"
+excerpt: "searchsploit -m <익스플로잇 경로> ```"
 readingTime: 2
 ---
 
