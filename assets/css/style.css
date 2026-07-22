@@ -321,14 +321,30 @@ a {
 
 .status-panel {
   margin: 12px 0 0;
-  padding: 16px 20px;
+  padding: 14px 20px 16px;
   background: var(--panel-dark-soft);
-  border: 3px solid var(--border-dark);
+  border-left: 3px solid var(--border-dark);
+  border-right: 3px solid var(--border-dark);
+  border-top: 8px double var(--border-mid);
+  border-bottom: 8px double var(--border-mid);
   box-shadow: 4px 4px 0 var(--shadow-pixel);
   font-family: var(--font-pixel);
   font-size: 12px;
   text-align: left;
   width: min(340px, 100%);
+}
+
+.status-panel__slot {
+  margin: 0 0 10px;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--text-on-dark-muted);
+  text-align: center;
+  opacity: .8;
+}
+
+.status-panel__stats {
+  margin: 0;
 }
 
 .status-panel__row {
@@ -348,7 +364,7 @@ a {
 
 .status-panel dd {
   margin: 0;
-  color: var(--accent-mint);
+  color: var(--accent-gold);
   text-align: right;
 }
 
