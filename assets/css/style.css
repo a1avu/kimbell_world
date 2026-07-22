@@ -368,6 +368,84 @@ a {
   text-align: right;
 }
 
+/* --- 소셜 링크 (GitHub / 이메일 복사) ------------------------------------- */
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.social-links__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 2px solid var(--border-mid);
+  color: var(--text-on-dark-muted);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.social-links__item:hover,
+.social-links__item:focus-visible {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+  outline: none;
+}
+
+.social-links__icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* SVG 요소는 [hidden] 어트리뷰트의 기본 UA 스타일(display:none)이
+   신뢰할 수 없게 적용될 때가 있어서, 체크 아이콘은 클래스 기본값으로
+   숨겨두고 JS가 인라인 style.display를 직접 토글한다. */
+.social-links__icon[data-icon="check"] {
+  display: none;
+}
+
+.social-links__tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  background: var(--panel-dark);
+  color: var(--accent-gold);
+  border: 2px solid var(--border-dark);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%) translateY(4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: none;
+}
+
+.social-links__tooltip.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.social-links__tooltip.is-instant {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-links__item,
+  .social-links__tooltip {
+    transition: none;
+  }
+}
+
 .hero__scroll-cue {
   position: absolute;
   bottom: 24px;
