@@ -31,13 +31,13 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Build post index (posts/index.json)
+      - name: Build indexes (posts/index.json, assets/images/travel/index.json)
         run: node scripts/build-index.js
 
       - name: Stage site files
         run: |
           mkdir -p _site
-          cp -R index.html assets posts _site/
+          cp -R index.html about.html assets posts _site/
           touch _site/.nojekyll
 
       - name: Setup Pages

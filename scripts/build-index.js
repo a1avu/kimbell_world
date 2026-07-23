@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 // posts/ 아래를 재귀적으로 스캔해서 posts/index.json을 재생성한다.
+// 마지막에 build-travel-index.js의 buildTravelIndex()도 호출해서
+// assets/images/travel/index.json까지 같이 재생성한다 — 새 여행 국가 폴더나
+// 사진을 추가하고 push만 하면(CI가 `node scripts/build-index.js` 한 번만
+// 돌려도) 두 매니페스트가 전부 최신 상태로 반영된다.
 //
 // posts/는 이제 flat이 아니라 posts/<section>/<category>/파일.md 구조다.
 // category/section은 원칙적으로 이 폴더 경로에서 자동으로 추론한다 —
@@ -28,6 +32,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+const buildTravelIndex = require("./build-travel-index.js");
 
 const REPO_ROOT = path.resolve(__dirname, "..");
 const POSTS_DIR = path.join(REPO_ROOT, "posts");
@@ -390,6 +395,9 @@ function main() {
     console.log("\n경고/변경 사항:");
     for (const w of allWarnings) console.log("  " + w);
   }
+
+  console.log("");
+  buildTravelIndex();
 }
 
 main();
