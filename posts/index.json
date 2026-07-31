@@ -1,5 +1,27 @@
 [
   {
+    "slug": "linkvortex",
+    "title": "linkvortex",
+    "date": "2026-07-31",
+    "category": "리눅스",
+    "section": "OSCP",
+    "path": "OSCP/리눅스/linkvortex.md",
+    "tags": [],
+    "excerpt": "이 버전에 마침 Arbitrary-File-Read 취약점이 있다고 함…",
+    "readingTime": 36
+  },
+  {
+    "slug": "credential",
+    "title": "credential",
+    "date": "2026-07-31",
+    "category": "치트시트",
+    "section": "OSCP",
+    "path": "OSCP/치트시트/credential.md",
+    "tags": [],
+    "excerpt": "**1. Dockerfile / docker-compose.yml** 아까처럼 실제 배포 경로, 컨테이너 구성, 볼륨 마운트, 환경변수 주입 방식이 다 드러남. `COPY`,…",
+    "readingTime": 4
+  },
+  {
     "slug": "oscp-junbi-peulraen",
     "title": "OSCP 준비 플랜",
     "date": "2026-07-21",
@@ -41,7 +63,7 @@
     "path": "OSCP/치트시트/linux-privesc.md",
     "tags": [],
     "excerpt": "쉘 진입하면 privesc 전에 이 3군데부터 훑는다:",
-    "readingTime": 17
+    "readingTime": 20
   },
   {
     "slug": "reverse-shell",
@@ -63,7 +85,7 @@
     "path": "OSCP/치트시트/web-checklist.md",
     "tags": [],
     "excerpt": "1. 페이지 접속 + 소스 확인 - footer나 소스에 도메인 보이면 그냥 등록하고 비교 - IP 접속 시 도메인으로 리다이렉트되면 `/etc/hosts` 등록 후 재접속",
-    "readingTime": 17
+    "readingTime": 18
   },
   {
     "slug": "relative-path-overwrite",
@@ -194,7 +216,7 @@
     "section": "OSCP",
     "path": "OSCP/치트시트/file-transfer.md",
     "tags": [],
-    "excerpt": "php 일시에 다음과 같이 넣음 ~~~bash echo '<?php system($_GET[\"cmd\"]); ?>' >> {파일명}.php.jpg ~~~ --- ### 특수문자…",
+    "excerpt": "(아직 작성되지 않은 노트)",
     "readingTime": 1
   },
   {
@@ -250,7 +272,7 @@
     "path": "OSCP/리눅스/usage.md",
     "tags": [],
     "excerpt": "gobuster 결과 robots.txt가 열려 있다는걸 확인할 수 있고 ~~~ User-agent: * Disallow: ~~~ 다음과 같은 내용이 있음 -> 크롤링을 차단하는…",
-    "readingTime": 12
+    "readingTime": 6
   },
   {
     "slug": "editor",
@@ -282,7 +304,7 @@
     "section": "wargame",
     "path": "wargame/웹해킹/portswigger-sqli.md",
     "tags": [],
-    "excerpt": "[레닥션: 계정 로그인 정보 (공개 블로그 노출 방지를 위해 제거)]",
+    "excerpt": "무슨 db일지 감 안올땐 MySQL → PostgreSQL → Oracle 순으로 시도하는 게 현실적",
     "readingTime": 19
   },
   {

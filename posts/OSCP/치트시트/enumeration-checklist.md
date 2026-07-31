@@ -68,6 +68,10 @@ ffuf -u http://target.com/FUZZ -w <wordlist path>
 
 [[_BoardLight]] : --append-domain 붙여야함
 
+**DNS**
+```
+gobuster dns --domain tukcbu.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+```
 **파라미터 퍼징**
 /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt
 

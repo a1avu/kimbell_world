@@ -298,7 +298,7 @@ readingTime: 34
 #### 7/21 (화)
 
 - [ ] 웹 기초 파트 계속
-- [ ] **HTB: Dog** (Linux Easy) 풀이
+- [x] **HTB: Dog** (Linux Easy) 풀이
 
 #### 7/22 (수)
 

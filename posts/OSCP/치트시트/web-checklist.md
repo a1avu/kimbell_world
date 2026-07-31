@@ -6,7 +6,7 @@ category: "치트시트"
 section: "OSCP"
 tags: []
 excerpt: "1. 페이지 접속 + 소스 확인 - footer나 소스에 도메인 보이면 그냥 등록하고 비교 - IP 접속 시 도메인으로 리다이렉트되면 `/etc/hosts` 등록 후 재접속"
-readingTime: 17
+readingTime: 18
 ---
 
 # Web Checklist
@@ -41,6 +41,9 @@ readingTime: 17
 	- **혹시 모를 크레덴셜 탐색 ex) 회원 관리 페이지 같은 곳에서**
 	-  [hackviser](https://hackviser.com/tactics/pentesting/services/jenkins)  여기에도 뭔가가 좀 있음
 	- `<프레임워크명> settings file` / `config location` / `default credentials` 이런식으로 검색하기
+	만약 CVE가 있는데 안된다면
+	- 아니거나 , 막아놨거나, 다른 진입점이 있거나
+	- 1개 exploit 안되면 다른 사람 exploit 도 써봐
 
 6. 로그인/업로드/파라미터 확인
 
@@ -378,6 +381,18 @@ git checkout <커밋_id>
 ->
 `<프레임워크명> settings file` / `config location` / `default credentials` 이런식으로 검색하기
 
+-> git이 소유권 문제로 안전하지 않다고 막는다면
+
+```bash
+git config --global --add safe.directory /media/sf_HTB/linkvortex/dumped
+```
+
+```bash
+cd ~/htb/linkvortex/dumped
+git checkout .
+```
+
+
 **참고**
 - [[dog]] : .git 활용의 극대화
 
@@ -390,3 +405,10 @@ Directory Traversal 페이로드: `GET /../../../../../../../../windows/win.ini`
 
 **참고**
 - [[servMon]] : pathtravelsal로 크레덴셜 파일 열람
+
+---
+# LFI 와 AFR의 차이
+
+LFI는 파일을 포함 시켜서 실행까지 할 수 있는 취약점
+RFI는 서버가 원격에 있는 파일을 불러와서 실행하는 취약점
+AFR은 파일을 읽기만 할 수 있는 취약점
