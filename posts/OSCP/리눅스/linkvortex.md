@@ -6,7 +6,7 @@ category: "리눅스"
 section: "OSCP"
 tags: []
 excerpt: "이 버전에 마침 Arbitrary-File-Read 취약점이 있다고 함…"
-readingTime: 36
+readingTime: 37
 ---
 
 #### Box: linkvortex | Linux | Easy
@@ -28,7 +28,8 @@ ghost 라는 앱이라고 함 버전 정보도 소스 들어가보니까 있고
 [CVE-2023-40028](https://github.com/0xDTC/Ghost-5.58-Arbitrary-File-Read-CVE-2023-40028)
 
 ##### Initial Foothold
-벡터:
+벡터: .git 노출 → git-dumper로 크레덴셜 확보 → CVE-2023-40028로 config 파일 열람 → SMTP 크레덴셜 재사용으로 SSH 접속
+
 명령어:
 해당 CVE를 실행시키기 위해선 일단 로그인을 할 수 있는 뭔가가 필요한 듯 함
 https://seocontentai.com/how-to-find-your-ghost-login-url/ 
@@ -466,7 +467,7 @@ cat ~/user.txt
 ```
 -> **user.txt**: ed98bd37055ca046feffcef15c8cdfb6
 ##### Privilege Escalation
-벡터:
+벡터 : clean_symlink.sh 심링크 검증 로직 우회 (이중 심링크/TOCTOU/변수 커맨드 실행)
 명령어:
 ```sh
 sudo -l

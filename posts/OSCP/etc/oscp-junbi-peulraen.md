@@ -315,7 +315,7 @@ readingTime: 34
 #### 7/23 (목)
 
 - [ ] PEN-200 웹 공격 파트: Directory brute forcing, File upload bypass
-- [ ] **HTB: LinkVortex** (Linux Easy) 풀이
+- [x] **HTB: LinkVortex** (Linux Easy) 풀이
 
 #### 7/24 (금)
 

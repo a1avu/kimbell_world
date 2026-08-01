@@ -58,7 +58,6 @@ readingTime: 4
 ---
 # scan_cred.py
 크레덴셜 자동 스캔 및 가장 적절해보이는거 까지 알려줌
--
 
 ```
     python3 cred_scan.py <디렉토리> [--ext py,js,json,env,...]

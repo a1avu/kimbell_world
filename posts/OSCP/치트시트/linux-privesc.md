@@ -105,6 +105,16 @@ python3 -m http.server 8000
 wget http://{ip}/{file_name}
 ~~~
 
+**crontab 확인**
+~~~bash
+cat /etc/crontab
+ls -al /etc/cron*
+cat /var/spool/cron/crontabs/*
+~~~
+
+**뭐 암만봐도 없어 걍 망했다 싶으면**
+`/opt`, `/var`, `/tmp` 얘네 하나씩 들어가보면서 확인 -> ls -al이랑 date도 찍어보면서 주기적으로 바뀌는 자동 실행 중인 녀석 있는지도 확인해보셈
+
 
 **DB 크레덴셜 확인**
 -> DB 크레덴셜 → 시스템 유저
@@ -185,12 +195,7 @@ mysqldump --user={user} --password={pass} --host=localhost {dbname}
 - [[linux_privesc#doas 권한 상승]] -> doas 나오면 써먹으셈
 
 ---
-## crontab 확인
-~~~bash
-cat /etc/crontab
-ls -al /etc/cron*
-cat /var/spool/cron/crontabs/*
-~~~
+ㅊ
 
 **유저 목록 (쉘 있는 애들만)**
 ~~~bash
@@ -472,3 +477,10 @@ CHECK_CONTENT=true sudo /usr/bin/bash /opt/ghost/clean_symlink.sh /home/bob/.cac
 
 **참고**
 - [[linkvortex]]
+
+---
+# Arbitary Code Execution
+
+
+**참고**
+- [[titanic]]

@@ -6,7 +6,7 @@ category: "치트시트"
 section: "OSCP"
 tags: []
 excerpt: "1. 페이지 접속 + 소스 확인 - footer나 소스에 도메인 보이면 그냥 등록하고 비교 - IP 접속 시 도메인으로 리다이렉트되면 `/etc/hosts` 등록 후 재접속"
-readingTime: 18
+readingTime: 19
 ---
 
 # Web Checklist
@@ -412,3 +412,16 @@ Directory Traversal 페이로드: `GET /../../../../../../../../windows/win.ini`
 LFI는 파일을 포함 시켜서 실행까지 할 수 있는 취약점
 RFI는 서버가 원격에 있는 파일을 불러와서 실행하는 취약점
 AFR은 파일을 읽기만 할 수 있는 취약점
+
+---
+# gitea
+
+1. **gobuster dir** 먼저 돌리기
+2. 코드 확인하기 (path travelsal) 같은 포인트 확인
+3. `/data/gitea/conf/app.ini` 확인해서 db 파일 위치 확인
+4. db파일에 있는 user에 크레덴셜 확인
+5. 이때 gitea에서 사용하는 해시 알고리즘은 `PBKDF2-HMAC-SHA256` 임
+6. [[HASH#gitea hash crack]] 이후는 여기 참조
+
+**참조**
+- [[titanic]]

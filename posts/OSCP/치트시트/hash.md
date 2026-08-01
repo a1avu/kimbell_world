@@ -6,7 +6,7 @@ category: "치트시트"
 section: "OSCP"
 tags: []
 excerpt: "-> 얘도 cve가 있을때가 있음 -> ex) keeper 덤프와 합쳐진 kdbx ## 1. 문자열 길이와 형태 (가장 일반적인 판별 기준)"
-readingTime: 2
+readingTime: 4
 ---
 
 -> 얘도 cve가 있을때가 있음  -> ex) [[keeper]] 덤프와 합쳐진 kdbx
@@ -45,9 +45,43 @@ hashcat -m 3200 -a 0 '$2a$10$SpKYdHLB0FOaT7n3x72wtuS0yR8uqqbNNpIPjUb2MZib3H9kVO8
 **-a**  
 - 0: 사전대입
 - 3: 무차별대입
+
 **-m**
+- **-m 지정 안하면 hashcat이 그냥 알려줌**
 - **-m 0:** MD5
 - **-m 100:** SHA1
 - **-m 1000:** NTLM (Windows passwords)
 - **-m 1800:** sha512crypt (Linux /etc/shadow)
 - **-m 3200:** bcrypt  -> $2a$10
+
+```sh
+hashcat --force -a 0 -m 20 0ce6f07fc9b557bc070fa7bef76a0d15:8bf3e3452b78544f8bee9400d6936d34 /usr/share/wordlists/rockyou.txt
+```
+
+
+---
+# gitea hash crack
+
+```sh
+sqlite3 gitea.db "select passwd,salt,name from user" | while read data; do \
+digest=$(echo "$data" | cut -d'|' -f1 | xxd -r -p | base64) \
+salt=$(echo "$data" | cut -d'|' -f2 | xxd -r -p | base64) \
+name=$(echo "$data" | cut -d'|' -f3) echo "${name}:sha256:50000:${salt}:${digest}"
+done | tee gitea.hashes
+```
+
+```sh
+hashcat -m 10900 gitea.hashes /usr/share/wordlists/rockyou.txt --user
+```
+-> 이걸로 실행
+
+- `gitea`가 일단 기본적으로 hex값으로 db에 저장을 해놓음 그래서 해당 hex를 raw로 바꾸고 
+- `hashcat`이 이 10900 모드를 base64로 받기를 원해서 이런 코드가 필요한거임
+
+```sh
+hashcat -m 10900 gitea.hashes /usr/share/wordlists/rockyou.txt --user --show
+```
+-> 이걸로 크랙된 거 볼 수 있음
+
+**참고**
+[[titanic]]
